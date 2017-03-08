@@ -75,7 +75,7 @@ describe('formatDate', () => {
   const locale = 'en';
 
   it('should return default format for date', () => {
-    expect(formatDate(date, locale)).toEqual('28/2 2017');
+    expect(formatDate(date, locale)).toEqual('28.2.2017');
   });
 
   it('should return overriden format', () => {

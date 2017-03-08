@@ -1,36 +1,41 @@
 import * as moment from 'moment';
 
-interface FormatOptions {
+export interface FormatOptions {
   precision?: number;
   delimiter?: string;
+  format?: string;
   separator?: string;
   template?: string;
   unit?: string;
 }
 
-interface DefaultFormatOptions {
+export interface DefaultFormatOptions {
   precision: number;
   delimiter: string;
+  format: string;
   separator: string;
   template: string;
   unit: string;
 }
 
+export type GivenDate = Date | moment.Moment | string;
+
+export const defaultDateFormat = 'D.M.YYYY';
+
 export const defaultOptions: DefaultFormatOptions = {
   precision: 10,
   delimiter: ',', // used in 10,000,000.10
+  format: defaultDateFormat,
   separator: '.', // used in 10.10
   template: '%n %u', // %n is placeholder for number, %u is for unit
   unit: '',
 };
 
-export const defaultDateFormat = 'D/M YYYY';
-
 export function mergeOptionsWithDefault(givenOptions: FormatOptions): DefaultFormatOptions {
   return { ...defaultOptions, ...givenOptions };
 }
 
-export function formatDate(givenDate: Date | moment.Moment, locale: string, format?: string) {
+export function formatDate(givenDate: GivenDate, locale: string, format?: string) {
   const date = moment(givenDate);
   date.locale(locale);
   return date.format(format || defaultDateFormat);
