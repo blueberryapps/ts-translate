@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 import * as moment from 'moment';
-import { Translator, Messages } from '../translator';
+import { Translator } from '../translator';
+import { Messages } from '../types';
 
 const locale = 'en';
 const messages = fromJS({

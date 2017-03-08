@@ -1,10 +1,10 @@
 import { fromJS, Map } from 'immutable';
 import { defaultOptions, DefaultFormatOptions, FormatOptions, formatDate, formatNumber, GivenDate } from './format';
 import defaultFormats from './defaultFormats';
-import { AppStore, TranslatorOptions, Messages } from './types';
+import { AppStore, TranslatorOptions, Messages, MsgOptions, TranslationResult } from './types';
 
 export interface Msg {
-  (key: string, options: MsgOptions = {}): TranslationResult;
+  (key: string, options?: MsgOptions): TranslationResult;
 }
 
 export interface FormatDate {
@@ -15,14 +15,18 @@ export interface FormatNumber {
   (givenNumber: number, options?: FormatOptions): string;
 }
 
+function isAppStore(x: any): x is AppStore {
+  return (x && typeof x.getState === 'function');
+}
+
 export class Translator {
   messages = Map() as Messages;
   locale = 'en';
   fallbackLocale = '';
-  store: AppStore = null;
+  store: AppStore | null = null;
 
   constructor(options: TranslatorOptions | AppStore) {
-    if (options && options.getState) {
+    if (isAppStore(options)) {
       this.store = options;
     } else {
       this.messages = options.messages || fromJS({ en: {}});
@@ -31,7 +35,8 @@ export class Translator {
     }
   }
   // tslint:disable-next-line:typedef
-  msg: Msg = (key, options = {}) => {
+  msg: Msg = (key, givenOptions) => {
+    const options = givenOptions || {};
     const path = options.scope ? options.scope.split('.').concat(key) : [key];
     const result = this.__findTranslation(path) || key;
 
@@ -101,11 +106,11 @@ export class Translator {
     }
   }
 
-  __messages() {
+  __messages(): Messages {
     if (this.store) {
-      return this.store.getState().translate.messages;
-    } else {
-      return this.messages;
+      return this.store.getState().translate.messages as Messages;
     }
+
+    return this.messages || fromJS({});
   }
 }
