@@ -6,7 +6,7 @@ yarn add ts-translate
 
 ## Vanila JS usage
 
-```
+```javascript
 import { fromJS } from 'immutable';
 import { Translator } from 'ts-translate';
 
@@ -46,7 +46,7 @@ translator.formatDate(new Date, 'short') // => 28.2. 2017 -> using aliases (look
 
 ## React + Redux
 
-```
+```javascript
 import { Provider as TranslateProvider, translate, reducer } from 'ts-translate';
 import { fromJS } from 'immutable'
 import { createStore, combineReducers } from 'redux';
@@ -85,7 +85,7 @@ const TranslatedScopedMyComponent = translate('homepage')(MyComponent);
 ## Formats Spefication
 
 you can modify default formatting options by specifying:
-```
+```javascript
 {
   messages fromJS({
     en: {
@@ -122,7 +122,7 @@ you can modify default formatting options by specifying:
 ```
 
 this will enable you to use:
-```
+```javascript
 translator.formatNumber(123456.78) // => 123,456.78
 translator.formatNumber(123456.78, 'currency') // => 123,456.78 € -> using alias
 translator.formatCurrency(123456.78) // => 123.456,78 €
