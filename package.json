@@ -4,5 +4,31 @@
   "main": "lib/index.js",
   "repository": "git@github.com:blueberryapps/translate.js.git",
   "author": "Ondrej Bartas <ondrej@bartas.cz>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "tslint": "tslint 'src/**/*.ts?(x)'",
+    "compile": "tsc",
+    "cleanupBuild": "rm -rf ./lib",
+    "prepublish": "yarn tslint && yarn test && yarn cleanupBuild && yarn compile"
+  },
+  "devDependencies": {
+    "@types/jest": "^18.1.1",
+    "jest": "^19.0.2",
+    "ts-jest": "^19.0.0",
+    "ts-node": "^2.1.0",
+    "tslint": "^4.5.1",
+    "typescript": "^2.2.1"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/__tests__/.*\\.spec\\.(ts|tsx)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  }
 }
