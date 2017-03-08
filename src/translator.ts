@@ -19,6 +19,8 @@ function isAppStore(x: any): x is AppStore {
   return (x && typeof x.getState === 'function');
 }
 
+export type StateOptions = Map<string, string | number>;
+
 export class Translator {
   messages = Map() as Messages;
   locale = 'en';
@@ -45,44 +47,48 @@ export class Translator {
 
   formatDate: FormatDate = (givenDate, customFormat) => {
     const keywordFormat = customFormat && this.__findTranslation(['formats', 'date', customFormat, 'format']);
-    const defaultFormat = this.__findTranslation(['formats'].concat(['date', 'format']));
-    const format = (keywordFormat || customFormat || defaultFormat || defaultFormats.formats.date.format) as string;
+    const defaultFormat = this.__findTranslation(['formats'].concat(['date', 'default', 'format']));
+    const format = (keywordFormat || customFormat || defaultFormat || defaultFormats.formats.date.default.format) as string;
 
     return formatDate(givenDate, this.locale, format);
   }
 
   formatNumber: FormatNumber = (givenNumber, options) => {
-    return formatNumber(givenNumber, this.__getOptions(['number'], defaultOptions, options));
+    if (typeof options === 'string') {
+      return formatNumber(givenNumber, this.__getOptions('number', options, {}));
+    } else {
+      return formatNumber(givenNumber, this.__getOptions('number', undefined, options));
+    }
   }
 
   formatCurrency: FormatNumber = (givenNumber, options) => {
-    const defaultFormat = this.__getOptions(
-      ['number', 'currency'],
-      { ...defaultOptions, ...defaultFormats.formats.number.currency },
-      options
-    );
+    const defaultFormat = this.__getOptions('number', 'currency', options);
 
     return formatNumber(givenNumber, defaultFormat);
   }
 
   formatPercentage: FormatNumber = (givenNumber, options) => {
-    const defaultFormat = this.__getOptions(
-      ['number', 'percentage'],
-      { ...defaultOptions, ...defaultFormats.formats.number.percentage },
-      options
-    );
+    const defaultFormat = this.__getOptions('number', 'percentage', options);
 
     return formatNumber(givenNumber, defaultFormat);
   }
 
   // tslint:disable-next-line:typedef
-  __getOptions(keys: string[], givenDefaultOptions: DefaultFormatOptions, overrideOptions: FormatOptions = {}): DefaultFormatOptions {
-    const options = this.__findTranslation(['formats'].concat(keys));
+  __getOptions(type: string, key?: string, overrideOptions: FormatOptions = {}): DefaultFormatOptions {
+    const defaultTypeOptions = this.__findTranslation(['formats'].concat(type, 'default')) as StateOptions;
 
-    if (options) {
-      return { ...givenDefaultOptions, ...(options as Messages).toJS(), ...overrideOptions };
-    }
-    return { ...givenDefaultOptions, ...overrideOptions };
+    const keyOptions = key && (this.__findTranslation(['formats'].concat(type, key)) as StateOptions);
+
+    const result =  {
+      ...defaultOptions,
+      ...defaultFormats.formats[type].default,
+      ...(key && defaultFormats.formats[type][key]),
+      ...(defaultTypeOptions && defaultTypeOptions.toJS()),
+      ...(keyOptions && keyOptions.toJS()),
+      ...overrideOptions
+    };
+
+    return result;
   }
 
   __findTranslation(keys: string[]): TranslationResult | Messages {

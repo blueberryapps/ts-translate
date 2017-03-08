@@ -1,9 +1,14 @@
 const formats = {
   formats: {
     date: {
-      format: 'D.M.YYYY',
+      default: {
+        format: 'D.M.YYYY',
+      }
     },
     number: {
+      default: {
+        precision: 10
+      },
       currency: {
         unit: '$'
       },

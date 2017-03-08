@@ -17,7 +17,9 @@ const messages = fromJS({
     },
     formats: {
       date: {
-        format: 'D.M.YYYY',
+        default: {
+          format: 'D.M.YYYY',
+        },
         short: {
           format: 'D.M.YYYY'
         },
@@ -26,6 +28,9 @@ const messages = fromJS({
         }
       },
       number: {
+        default: {
+          precision: 10
+        },
         currency: {
           unit: '$'
         },
@@ -115,7 +120,15 @@ describe('formatNumber', () =>  {
   });
 
   it('returns formatted number with options in messages', () =>  {
-    expect(new Translator({ messages: messages.setIn(['en', 'formats', 'number', 'template'], '%n %'), locale }).formatNumber(123456.789)).toEqual('123,456.789 %');
+    expect(new Translator({ messages: messages.setIn(['en', 'formats', 'number', 'default', 'template'], '%n %'), locale }).formatNumber(123456.789)).toEqual('123,456.789 %');
+  });
+
+  it('returns formatted number with currency option', () =>  {
+    expect(new Translator({ messages, locale }).formatNumber(123456.789, 'currency')).toEqual('123,456.789 $');
+  });
+
+  it('returns formatted number with percentage option', () =>  {
+    expect(new Translator({ messages, locale }).formatNumber(123456.789, 'percentage')).toEqual('123,456.789 %');
   });
 
   it('returns formatted number with override options', () =>  {
