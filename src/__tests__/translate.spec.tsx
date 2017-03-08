@@ -13,7 +13,7 @@ import { fromJS  } from 'immutable';
 const initial: TranslatorOptions = {
   messages: fromJS({
     cs: { home: { description: 'Foo', fallback: 'Fallback' } },
-    en: { home: { description: 'enFoo', about: 'Bar' } }
+    en: { home: { header: { title: 'FooBar' }, description: 'enFoo', about: 'Bar' } }
   }),
   locale: 'cs',
   fallbackLocale: 'en'
@@ -36,19 +36,33 @@ describe('Translate Decorator', () => {
     }
   }
 
-  const DecoratedContainer = translate<{}>(Container);
+  const createStub = (scope?: string | string[]) => {
+    const DecoratedContainer = translate<{}>(scope)(Container);
 
-  const container = TestUtils.renderIntoDocument(
-    <ReduxProvider store={store}>
-      <TranslateProvider >
-        <DecoratedContainer />
-      </TranslateProvider>
-    </ReduxProvider>
-  ) as  React.Component<{}, {}>;
+    const container = TestUtils.renderIntoDocument(
+      <ReduxProvider store={store}>
+        <TranslateProvider >
+          <DecoratedContainer />
+        </TranslateProvider>
+      </ReduxProvider>
+    ) as  React.Component<{}, {}>;
 
-  const stub = TestUtils.findRenderedComponentWithType(container, Passthrough);
+    return TestUtils.findRenderedComponentWithType(container, Passthrough);
+  };
 
   it('should have a msg prop', () => {
-    expect(stub.props.msg('description', { scope: 'home' })).toEqual('Foo');
+    expect(createStub().props.msg('description', { scope: 'home' })).toEqual('Foo');
+  });
+
+  it('should have a msg prop with scope', () => {
+    expect(createStub('home').props.msg('description')).toEqual('Foo');
+  });
+
+  it('should have a msg prop with array scope', () => {
+    expect(createStub(['home', 'header']).props.msg('title')).toEqual('FooBar');
+  });
+
+  it('should have a msg prop with dotted scope', () => {
+    expect(createStub('home.header').props.msg('title')).toEqual('FooBar');
   });
 });

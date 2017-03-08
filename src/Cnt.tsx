@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { TranslationResult } from './types';
 
 interface CntProps {
-  content: string;
+  content: TranslationResult;
 }
 
 export default class Cnt extends React.Component<CntProps, void> {
@@ -9,7 +10,7 @@ export default class Cnt extends React.Component<CntProps, void> {
     const { content } = this.props;
 
     return (
-      <span className="cnt" dangerouslySetInnerHTML={{ __html: content }} />
+      <span className="cnt" dangerouslySetInnerHTML={{ __html: `${content}` }} />
     );
   }
 }

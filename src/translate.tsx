@@ -20,47 +20,60 @@ export interface TranslateProps {
   translateMessages: () => Messages;
 }
 
-export function translate<P>(WrappedComponent: React.ComponentClass<P & TranslateProps>) {
-  return class Translate extends React.Component<P, void> {
+export function translate<P>(scope?: string | string[]) {
+  return (WrappedComponent: React.ComponentClass<P & TranslateProps>) => {
+    return class Translate extends React.Component<P, void> {
 
-    static displayName = `Translate(${WrappedComponent && (WrappedComponent.displayName || WrappedComponent.name) || 'Component'})`;
+      static displayName = `Translate(${WrappedComponent && (WrappedComponent.displayName || WrappedComponent.name) || 'Component'})`;
 
-    static contextTypes = {
-      store: React.PropTypes.object,
-      translator: React.PropTypes.object
-    };
-
-    // tslint:disable-next-line:typedef
-    cnt: CntFunc = (key, options = {}) => {
-      const { translator } = this.context;
-      return (<Cnt content={translator.msg()} />);
-    }
-
-    getTranslateMethods() {
-      const { translator } = this.context;
-      const { msg, formatDate,  formatCurrency, formatNumber, formatPercentage } = translator as Translator;
-
-      return {
-        cnt: this.cnt,
-        msg,
-        formatDate,
-        formatNumber,
-        formatCurrency,
-        formatPercentage,
-        translator,
-        translateLocale: translator.__locale(),
-        translateMessages: translator.__messages()
+      static contextTypes = {
+        store: React.PropTypes.object,
+        translator: React.PropTypes.object
       };
-    }
 
-    render() {
-      return (
-        <WrappedComponent
-          {...this.getTranslateMethods()}
-          {...this.props}
-        />
-      );
-    }
+      // tslint:disable-next-line:typedef
+      cnt: CntFunc = (key, options = {}) => {
+        return (<Cnt content={this.msg(key, options)} />);
+      }
+
+      msg: Msg = (key, givenOptions) => {
+        const options = givenOptions || {};
+        const { translator } = this.context;
+
+        const wantedScope = ([] as string[])
+          .concat(scope || [], options.scope || [])
+          .filter((x: any) => !!x)
+          .join('.');
+
+        return translator.msg(key, { ...options, scope: wantedScope });
+      }
+
+      getTranslateMethods() {
+        const { translator } = this.context;
+        const { formatDate,  formatCurrency, formatNumber, formatPercentage } = translator as Translator;
+
+        return {
+          cnt: this.cnt,
+          msg: this.msg,
+          formatDate,
+          formatNumber,
+          formatCurrency,
+          formatPercentage,
+          translator,
+          translateLocale: translator.__locale(),
+          translateMessages: translator.__messages()
+        };
+      }
+
+      render() {
+        return (
+          <WrappedComponent
+            {...this.getTranslateMethods()}
+            {...this.props}
+          />
+        );
+      }
+    };
   };
 }
 
