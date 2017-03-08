@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Translator } from './translator';
 
-class Provider extends React.Component<void, void> { // eslint-disable-line react/no-multi-comp
+export class Provider extends React.Component<void, void> { // eslint-disable-line react/no-multi-comp
   static defaultProps = {
     config: {}
   };

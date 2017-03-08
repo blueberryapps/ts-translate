@@ -15,7 +15,7 @@ export const initialState: TranslatorOptions = {
  * @param  {Object} action      Flux action
  * @return {Object}             Updated app state
  */
-export default function translationReducer(state: TranslatorOptions = initialState, action: TranslateAction) {
+export function translationReducer(state: TranslatorOptions = initialState, action: TranslateAction) {
 
   switch (action.type) {
 
@@ -24,3 +24,5 @@ export default function translationReducer(state: TranslatorOptions = initialSta
   }
 
 }
+
+export default translationReducer;
