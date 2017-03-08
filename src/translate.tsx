@@ -4,7 +4,7 @@ import { Messages, MsgOptions } from './types';
 
 import *  as React from 'react';
 
-interface CntFunc {
+export interface CntFunc {
   (key: string, options?: MsgOptions): JSX.Element;
 }
 
@@ -20,8 +20,10 @@ export interface TranslateProps {
   translateMessages: () => Messages;
 }
 
-export function translate<P>(scope?: string | string[]) {
-  return (WrappedComponent: React.ComponentClass<P & TranslateProps>) => {
+export type TranslateDecorator<P> = (WrappedComponent: React.ComponentClass<P & TranslateProps>) => React.ComponentClass<P>;
+
+export function translate<P>(scope?: string | string[]): TranslateDecorator<P> {
+  return (WrappedComponent) => {
     return class Translate extends React.Component<P, void> {
 
       static displayName = `Translate(${WrappedComponent && (WrappedComponent.displayName || WrappedComponent.name) || 'Component'})`;

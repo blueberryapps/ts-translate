@@ -2,6 +2,7 @@
   "name": "ts-translate",
   "version": "1.0.0",
   "main": "lib/index.js",
+  "typings": "lib/index",
   "repository": "git@github.com:blueberryapps/ts-translate.git",
   "author": "Ondrej Bartas <ondrej@bartas.cz>",
   "license": "MIT",

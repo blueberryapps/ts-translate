@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TranslationResult } from './types';
 
-interface CntProps {
+export interface CntProps {
   content: TranslationResult;
 }
 
