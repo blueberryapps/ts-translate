@@ -66,6 +66,7 @@ export class Translator {
     return formatNumber(givenNumber, defaultFormat);
   }
 
+  // tslint:disable-next-line:typedef
   __getOptions(keys: string[], givenDefaultOptions: DefaultFormatOptions, overrideOptions = {} as FormatOptions): DefaultFormatOptions {
     const options = this.__findTranslation(['formats'].concat(keys));
 
@@ -74,6 +75,7 @@ export class Translator {
     }
     return { ...givenDefaultOptions, ...overrideOptions };
   }
+
   __findTranslation(keys: string[]): TranslationResult | Messages {
     return this.messages.getIn([this.locale].concat(keys)) ||
       this.messages.getIn([this.fallbackLocale].concat(keys));
