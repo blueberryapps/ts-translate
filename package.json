@@ -44,7 +44,9 @@
   },
   "peerDependencies": {
     "immutable": ">=3.0.0",
-    "moment": ">=2.0.0",
+    "moment": ">=2.0.0"
+  },
+  "optionalDependencies": {
     "react-redux": ">=4.0.0",
     "react": ">=13.0.0"
   },
