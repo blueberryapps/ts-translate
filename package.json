@@ -14,7 +14,16 @@
   },
   "devDependencies": {
     "@types/jest": "^18.1.1",
+    "@types/moment": "^2.13.0",
+    "@types/react": "^15.0.14",
+    "@types/react-addons-test-utils": "^0.14.17",
+    "@types/react-dom": "^0.14.23",
+    "immutable": "^3.8.1",
     "jest": "^19.0.2",
+    "moment": "^2.17.1",
+    "react": "^15.4.2",
+    "react-addons-test-utils": "^15.4.2",
+    "react-dom": "^15.4.2",
     "ts-jest": "^19.0.0",
     "ts-node": "^2.1.0",
     "tslint": "^4.5.1",
@@ -31,9 +40,11 @@
       "js"
     ]
   },
+  "peerDependencies": {
+    "@types/moment": ">=2.0.0",
+    "immutable": ">=3.0.0",
+    "moment": ">=2.0.0"
+  },
   "dependencies": {
-    "@types/moment": "^2.13.0",
-    "immutable": "^3.8.1",
-    "moment": "^2.17.1"
   }
 }
