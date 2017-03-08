@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 interface FormatOptions {
   precision?: number;
   delimiter?: string;
@@ -22,8 +24,16 @@ export const defaultOptions: DefaultFormatOptions = {
   unit: '',
 };
 
+export const defaultDateFormat = 'D/M YYYY';
+
 export function mergeOptionsWithDefault(givenOptions: FormatOptions): DefaultFormatOptions {
   return { ...defaultOptions, ...givenOptions };
+}
+
+export function formatDate(givenDate: Date | moment.Moment, locale: string, format?: string) {
+  const date = moment(givenDate);
+  date.locale(locale);
+  return date.format(format || defaultDateFormat);
 }
 
 export function formatNumber(input: number, givenOptions: FormatOptions) {

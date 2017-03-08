@@ -43,7 +43,7 @@ describe('Using scope', () => {
   it('should return object containing all messages under given key', () => {
     expect(new Translator({ messages, locale }).msg('deep')).toEqual(messages.getIn(['en', 'deep']).toJS());
   });
-})
+});
 
 describe('Fallbacking locales', () => {
   it('should return text in es from messages', () => {
@@ -57,4 +57,4 @@ describe('Fallbacking locales', () => {
   it('should return default text when not found in locale and defaultLocale', () => {
     expect(new Translator({ messages, locale: 'es' }).msg('Not translated')).toEqual('Not translated');
   });
-})
+});

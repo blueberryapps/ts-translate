@@ -32,6 +32,11 @@ export class Translator {
     return Map.isMap(result) ? (result as Messages).toJS() : result;
   }
 
+  formatDate = () => {};
+  formatCurrency = () => {};
+  formatNumber = () => {};
+  formatPercentage = () => {};
+
   __findTranslation(keys: string[]): TranslationResult | Messages {
     return this.messages.getIn([this.locale].concat(keys)) ||
       this.messages.getIn([this.fallbackLocale].concat(keys));
