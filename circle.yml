@@ -19,4 +19,4 @@ deployment:
     branch:
       - master
     commands:
-      - publish
+      - ./publish
