@@ -49,6 +49,10 @@ it('should return default text', () => {
   expect(new Translator({ messages, locale }).msg('Not translated')).toEqual('Not translated');
 });
 
+it('should return null when disabledDefault', () => {
+  expect(new Translator({ messages, locale }).msg('Not translated', { disableDefault: true })).toEqual(null);
+});
+
 it('should return text from messages', () => {
   expect(new Translator({ messages, locale }).msg('Homepage headline')).toEqual('Super headline');
 });
@@ -60,6 +64,10 @@ describe('Using scope', () => {
 
   it('should return text from messages with nested key path', () => {
     expect(new Translator({ messages, locale }).msg('homepage.Homepage headline')).toEqual('Super headline under scope');
+  });
+
+  it('should return text from messages with nested array key', () => {
+    expect(new Translator({ messages, locale }).msg(['homepage', 'Homepage headline'])).toEqual('Super headline under scope');
   });
 
   it('should return default text from messages with unknown scope', () => {

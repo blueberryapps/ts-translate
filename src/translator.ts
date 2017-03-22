@@ -4,7 +4,7 @@ import defaultFormats from './defaultFormats';
 import { AppStore, TranslatorOptions, Messages, MsgOptions, TranslationResult } from './types';
 
 export interface Msg {
-  (key: string, options?: MsgOptions): TranslationResult;
+  (key: string | string[], options?: MsgOptions): TranslationResult;
 }
 
 export interface FormatDate {
@@ -38,12 +38,13 @@ export class Translator {
   }
   // tslint:disable-next-line:typedef
   msg: Msg = (key, givenOptions) => {
-    const splittedKey = key.split('.');
+    const splittedKey = ([] as string[]).concat(key).join('.').split('.');
     const options = givenOptions || {};
     const path = options.scope ? options.scope.split('.').concat(splittedKey) : splittedKey;
-    const result = this.__findTranslation(path) || key;
+    const result = this.__findTranslation(path);
+    const defaultText = options.disableDefault ? null : key;
 
-    return Map.isMap(result) ? (result as Messages).toJS() : result;
+    return Map.isMap(result) ? (result as Messages).toJS() : (result || defaultText);
   }
 
   formatDate: FormatDate = (givenDate, customFormat) => {

@@ -18,5 +18,6 @@ export interface TranslatorOptions {
 }
 
 export interface MsgOptions {
+  disableDefault?: boolean;
   scope?: string;
 }

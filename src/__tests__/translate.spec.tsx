@@ -36,8 +36,8 @@ describe('Translate Decorator', () => {
     }
   }
 
-  const createStub = (scope?: string | string[]) => {
-    const DecoratedContainer = translate<{}>(scope)(Container);
+  const createStub = (scope?: string | string[], options = {}) => {
+    const DecoratedContainer = translate<{}>(scope, options)(Container);
 
     const container = TestUtils.renderIntoDocument(
       <ReduxProvider store={store}>
@@ -53,6 +53,15 @@ describe('Translate Decorator', () => {
   it('should have a msg prop', () => {
     expect(createStub().props.msg('description', { scope: 'home' })).toEqual('Foo');
   });
+
+  it('should have default message', () => {
+    expect(createStub().props.msg('Default Message', { scope: 'home' })).toEqual('Default Message');
+  });
+
+  it('should return null when disableDefault', () => {
+    expect(createStub('', { disableDefault: true }).props.msg('Default Message', { scope: 'home' })).toEqual(null);
+  });
+
 
   it('should have a msg prop with scope', () => {
     expect(createStub('home').props.msg('description')).toEqual('Foo');

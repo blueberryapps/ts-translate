@@ -22,7 +22,7 @@ export interface TranslateProps {
 
 export type TranslateDecorator<P> = (WrappedComponent: React.ComponentClass<P & TranslateProps>) => React.ComponentClass<P>;
 
-export function translate<P>(scope?: string | string[]): TranslateDecorator<P> {
+export function translate<P>(scope?: string | string[], overrides?: MsgOptions): TranslateDecorator<P> {
   return (WrappedComponent) => {
     return class Translate extends React.Component<P, void> {
 
@@ -47,7 +47,7 @@ export function translate<P>(scope?: string | string[]): TranslateDecorator<P> {
           .filter((x: any) => !!x)
           .join('.');
 
-        return translator.msg(key, { ...options, scope: wantedScope });
+        return translator.msg(key, { ...options, ...overrides, scope: wantedScope });
       }
 
       getTranslateMethods() {
