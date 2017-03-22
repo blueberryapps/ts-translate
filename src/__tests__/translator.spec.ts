@@ -57,6 +57,17 @@ it('should return text from messages', () => {
   expect(new Translator({ messages, locale }).msg('Homepage headline')).toEqual('Super headline');
 });
 
+describe('Using array as keys for fallbacking', () => {
+  it('should return text from first found key', () => {
+    expect(new Translator({ messages, locale }).msg(['deep.scope.Homepage headline', 'homepage.Homepage headline'])).toEqual('Super headline under deep scope');
+    expect(new Translator({ messages, locale }).msg(['deep.scope.unknown', 'homepage.Homepage headline'])).toEqual('Super headline under scope');
+  });
+
+  it('should return default text from first not found key', () => {
+    expect(new Translator({ messages, locale }).msg(['deep.scope.unknown', 'homepage.unknown'])).toEqual('deep.scope.unknown');
+  });
+});
+
 describe('Using scope', () => {
   it('should return text from messages with scope', () => {
     expect(new Translator({ messages, locale }).msg('Homepage headline', { scope: 'homepage' })).toEqual('Super headline under scope');

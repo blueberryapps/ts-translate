@@ -20,6 +20,7 @@ function isAppStore(x: any): x is AppStore {
 }
 
 export type StateOptions = Map<string, string | number>;
+export type LookupResult = TranslationResult | Messages;
 
 export class Translator {
   messages = Map() as Messages;
@@ -36,13 +37,33 @@ export class Translator {
       this.fallbackLocale = options.fallbackLocale || this.fallbackLocale;
     }
   }
+
+  __getPath(key: string | string[], options: MsgOptions) {
+    const splittedKey = ([] as string[]).concat(key).join('.').split('.');
+    return options.scope ? options.scope.split('.').concat(splittedKey) : splittedKey;
+  }
+
+  __getResultForKeys(key: string[], locale: string, options: MsgOptions) {
+      return key.reduce(
+        (acc: LookupResult, subKey: string | string[]) =>  acc || this.__findTranslationForLocale(locale, this.__getPath(subKey, options)),
+        null
+      );
+  }
   // tslint:disable-next-line:typedef
   msg: Msg = (key, givenOptions) => {
-    const splittedKey = ([] as string[]).concat(key).join('.').split('.');
     const options = givenOptions || {};
-    const path = options.scope ? options.scope.split('.').concat(splittedKey) : splittedKey;
-    const result = this.__findTranslation(path);
-    const defaultText = options.disableDefault ? null : key;
+    const defaultTextFromKey = Array.isArray(key) ? key[0] : key;
+
+    if (Array.isArray(key)) {
+      const foundMatch = this.__getResultForKeys(key, this.__locale(), options) ||
+        this.__getResultForKeys(key, this.__fallbackLocale(), options);
+      if (foundMatch && typeof foundMatch !== 'object') {
+        return foundMatch;
+      }
+    }
+
+    const result = this.__findTranslation(this.__getPath(key, options));
+    const defaultText = options.disableDefault ? null : defaultTextFromKey;
 
     return Map.isMap(result) ? (result as Messages).toJS() : (result || defaultText);
   }
@@ -93,9 +114,13 @@ export class Translator {
     return result;
   }
 
-  __findTranslation(keys: string[]): TranslationResult | Messages {
-    return this.__messages().getIn([this.__locale()].concat(keys)) ||
-      this.__messages().getIn([this.__fallbackLocale()].concat(keys));
+  __findTranslation(keys: string[]): LookupResult {
+    return this.__findTranslationForLocale(this.__locale(), keys) ||
+      this.__findTranslationForLocale(this.__fallbackLocale(), keys);
+  }
+
+  __findTranslationForLocale(locale: string, keys: string[]): LookupResult {
+    return this.__messages().getIn([locale].concat(keys));
   }
 
   __locale() {
@@ -108,9 +133,9 @@ export class Translator {
 
   __fallbackLocale() {
     if (this.store) {
-      return this.store.getState().translate.fallbackLocale;
+      return this.store.getState().translate.fallbackLocale || this.locale;
     } else {
-      return this.fallbackLocale;
+      return this.fallbackLocale || this.locale;
     }
   }
 
