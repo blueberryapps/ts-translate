@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable';
+import { fromJS, Map } from 'immutable';
 import * as actions from './actions';
 import { Messages, TranslatorOptions } from './types';
 import { TranslateAction } from './actions';
@@ -16,6 +16,10 @@ export const initialState: TranslatorOptions = {
  * @return {Object}             Updated app state
  */
 export function translationReducer(state: TranslatorOptions = initialState, action: TranslateAction) {
+  // Revive state if messages are not immutable Map
+  if (!Map.isMap(state.messages)) {
+    return { ...initialState, ...state, messages: fromJS(state.messages) };
+  }
 
   switch (action.type) {
 

@@ -38,8 +38,9 @@ export class Translator {
   }
   // tslint:disable-next-line:typedef
   msg: Msg = (key, givenOptions) => {
+    const splittedKey = key.split('.');
     const options = givenOptions || {};
-    const path = options.scope ? options.scope.split('.').concat(key) : [key];
+    const path = options.scope ? options.scope.split('.').concat(splittedKey) : splittedKey;
     const result = this.__findTranslation(path) || key;
 
     return Map.isMap(result) ? (result as Messages).toJS() : result;

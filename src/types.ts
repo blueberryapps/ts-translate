@@ -14,7 +14,7 @@ export type Messages = Map<string, Map<string, TranslationResult>>;
 export interface TranslatorOptions {
   locale: string;
   fallbackLocale?: string;
-  messages?: Messages;
+  messages?: Messages | any;
 }
 
 export interface MsgOptions {

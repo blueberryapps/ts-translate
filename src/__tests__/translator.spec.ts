@@ -58,6 +58,10 @@ describe('Using scope', () => {
     expect(new Translator({ messages, locale }).msg('Homepage headline', { scope: 'homepage' })).toEqual('Super headline under scope');
   });
 
+  it('should return text from messages with nested key path', () => {
+    expect(new Translator({ messages, locale }).msg('homepage.Homepage headline')).toEqual('Super headline under scope');
+  });
+
   it('should return default text from messages with unknown scope', () => {
     expect(new Translator({ messages, locale }).msg('Homepage headline', { scope: 'unknown' })).toEqual('Homepage headline');
   });
