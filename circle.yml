@@ -5,7 +5,6 @@ machine:
 dependencies:
   pre:
     - curl -o- -L https://yarnpkg.com/install.sh | bash
-    - yarn global add gulp cypress-cli
   override:
     - yarn install
 
