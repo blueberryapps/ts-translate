@@ -5,3 +5,6 @@ export { Provider } from './Provider';
 export { translate, TranslateProps } from './translate';
 export { Translator } from './translator';
 export { AppState, TranslatorOptions } from './types';
+
+import translate from './translate';
+export default translate;
