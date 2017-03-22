@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "token:"
+echo $NPM_TOKEN
+
 # Login to NPM
 npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN;
 
