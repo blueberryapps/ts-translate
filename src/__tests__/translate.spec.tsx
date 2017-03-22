@@ -62,7 +62,6 @@ describe('Translate Decorator', () => {
     expect(createStub('', { disableDefault: true }).props.msg('Default Message', { scope: 'home' })).toEqual(null);
   });
 
-
   it('should have a msg prop with scope', () => {
     expect(createStub('home').props.msg('description')).toEqual('Foo');
   });
