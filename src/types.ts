@@ -25,3 +25,29 @@ export interface MsgOptions {
 export interface InterpolationDictionary {
   [key: string]: string | number;
 }
+
+export type Version = string;
+
+export interface ApiConfig {
+  apiUrl?: string;
+  apiToken?: string;
+  releasesDir?: string;
+}
+
+export interface ReleaseVersion {
+  locale: string;
+  version: Version;
+  created_at: string;
+}
+
+export interface Releases {
+  [locale: string]: ReleaseVersion[];
+}
+
+export type ApiMethod = 'POST' | 'GET' | 'PUT';
+
+export type ApiEndpoint = string;
+
+export interface ApiData {
+  [key: string]: number | string | ApiData;
+}

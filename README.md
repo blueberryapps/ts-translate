@@ -29,6 +29,8 @@ translator.msg('foo', { scope: 'bar' }) // => 'bar'
 translator.msg('Some headline') // Not found will return text in first argument => 'Some headline'
 translator.msg('Some headline', { scope: 'bar' }) // => 'Super Headline'
 
+translator.msg('Not found text', { disableDefault: true })
+// => Will not return default text (Not found text) instead it will return 'null'
 
 translator.formatNumber(123456.78) // => 123,456.78
 translator.formatNumber(123456.78, {precision: 1}) // => 123,456.8
@@ -131,3 +133,24 @@ translator.formatPercentage(123456.78) // => 123.456,78 %
 translator.formatDate(new Date, 'shortTime') // => 19:23 -> using alias
 translator.formatDate(new Date, 'long') // => 28.2.2017 19:23:16 -> using alias
 ```
+
+## Translation server
+
+Enable application to send and receive translations from Translation server.
+
+- __apiUrl__ - url to translation server
+- __apiToken__ - project token is needed for enabling synchronization
+- __sync__ - enable synchronization of translations (remembers translations, sends them to server and receives translations back)
+- __liveSync__ - enable Server Side Events for instant refresh of translations directly after update in translation server
+- __releasesDir__ - directory to store releases (needed for releases workflow)
+
+### Task for communicating with Translation server
+
+Enables you to list and download releases to your project.
+
+```
+yarn translate-list // List all created releases
+yarn translate-fetch // Download one specified release (for locale) to specified folder
+```
+
+Both commands supports taking `apiToken` and `apiUrl` from ENV variables (`TRANSLATE_API_TOKEN`, `TRANSLATE_API_URL`) or command line (`--apiToken`, `--apiUrl`) arguments

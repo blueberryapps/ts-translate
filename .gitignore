@@ -4,3 +4,4 @@ yarn*.log
 .DS_Store
 dist
 lib
+test_fetch_release
