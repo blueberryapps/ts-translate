@@ -71,7 +71,7 @@ describe('Connector', () => {
       expect(stub.mock.calls[0]).toEqual([
         config,
         'POST',
-        'translations',
+        'api/v1/translations',
         {
           locale: 'en',
           location: '/foo-bar',
@@ -93,7 +93,7 @@ describe('Connector', () => {
       expect(stub.mock.calls[1]).toEqual([
         config,
         'POST',
-        'translations',
+        'api/v1/translations',
         {
           locale: 'en',
           location: '/foo-bar',
@@ -106,7 +106,7 @@ describe('Connector', () => {
       expect(stub.mock.calls[2]).toEqual([
         config,
         'POST',
-        'translations',
+        'api/v1/translations',
         {
           locale: 'en',
           location: '/bar',

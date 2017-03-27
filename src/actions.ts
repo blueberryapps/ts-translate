@@ -42,7 +42,7 @@ export function fetchTranslations(config: ApiConfig) {
     dispatch({ type: 'TRANSLATE_FETCH_START' });
     const getPromise = async () => {
       try {
-        const data = await api(config, 'GET', '/api/v1/translations');
+        const data = await api(config, 'GET', 'api/v1/translations');
         dispatch(updateMessages(data));
         dispatch({ type: 'TRANSLATE_FETCH_SUCCESS' });
         return data;

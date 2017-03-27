@@ -1,4 +1,4 @@
-import apiCall from './api';
+import apiCall, { apiUrlResolve } from './api';
 import { fetchTranslations, updateMessages } from './actions';
 import { Map } from 'immutable';
 import { Dispatch } from 'redux';
@@ -72,7 +72,7 @@ export default class Connector {
     )
     .filter((translations: StoredTranslations) => !translations.isEmpty())
     .map((translations: StoredTranslations, location: string) =>
-      this.api(this.config, 'POST', 'translations', {
+      this.api(this.config, 'POST', 'api/v1/translations', {
         location,
         locale:       this.locale,
         translations: translations.toIndexedSeq().toJS()
@@ -115,7 +115,7 @@ export default class Connector {
 
       if (this.config.liveSync) {
         const EventSource = require('eventsource');
-        changesEventSource = new EventSource(`${apiUrl}/changes?token=${apiToken}`);
+        changesEventSource = new EventSource(apiUrlResolve(`${apiUrl}`, `api/v1/changes?token=${apiToken}`));
         changesEventSource.addEventListener('translations_changed', ({ data }: { data: string }) => {
           this.dispatch(updateMessages(JSON.parse(data)));
         });
