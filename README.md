@@ -154,3 +154,28 @@ yarn translate-fetch // Download one specified release (for locale) to specified
 ```
 
 Both commands supports taking `apiToken` and `apiUrl` from ENV variables (`TRANSLATE_API_TOKEN`, `TRANSLATE_API_URL`) or command line (`--apiToken`, `--apiUrl`) arguments
+
+### Passing config to Provider
+
+```javascript
+import { Provider as TranslateProvider } from 'ts-translate';
+
+const config = {
+  apiUrl: 'https://translations.blueberry.io',
+  apiToken: 'XYZ',
+  sync: true,
+  liveSync: true
+}
+
+<TranslateProvider config={config}>
+  // ...
+</TranslateProvider>
+```
+
+### On server side preload latest translations from TS
+
+```
+import { fetchTranslations } from 'ts-translates';
+
+fetchTranslations(config)(dispatch);
+```

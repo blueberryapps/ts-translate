@@ -1,7 +1,13 @@
 import * as React from 'react';
+import Connector from './Connector';
 import { Translator } from './translator';
+import { ApiConfig } from './types';
 
-export class Provider extends React.Component<void, void> { // eslint-disable-line react/no-multi-comp
+export interface ProviderProps {
+  config?: ApiConfig;
+}
+
+export class Provider extends React.Component<ProviderProps, void> { // eslint-disable-line react/no-multi-comp
   static defaultProps = {
     config: {}
   };
@@ -16,9 +22,12 @@ export class Provider extends React.Component<void, void> { // eslint-disable-li
 
   getChildContext() {
     const { store } = this.context;
+    const { config } = this.props;
+    const location: string = typeof window !== 'undefined' ? `${window.location}` : '/';
+    const connector = (config && config.sync) ? new Connector(config, store.dispatch, location) : undefined;
 
     return {
-      translator: new Translator(store)
+      translator: new Translator(store, connector)
     };
   }
 

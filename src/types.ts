@@ -9,7 +9,7 @@ export interface AppStore {
 }
 
 export type TranslationResult = string | number | boolean | null | object;
-export type Messages = Map<string, Map<string, TranslationResult>>;
+export type Messages = Map<string, Map<string, TranslationResult> | TranslationResult>;
 
 export interface TranslatorOptions {
   locale: string;
@@ -28,14 +28,18 @@ export interface InterpolationDictionary {
 
 export type Version = string;
 
+export type Locale = string;
+
 export interface ApiConfig {
   apiUrl?: string;
   apiToken?: string;
   releasesDir?: string;
+  sync?: boolean;
+  liveSync?: boolean;
 }
 
 export interface ReleaseVersion {
-  locale: string;
+  locale: Locale;
   version: Version;
   created_at: string;
 }

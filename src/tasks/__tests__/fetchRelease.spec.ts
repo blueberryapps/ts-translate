@@ -27,7 +27,7 @@ describe('fetchRelease()', () => {
       Authorization: 'Token token=X',
       'Content-type': 'application/json'
     }
-  }).get('/releases/unknown_v001.json')
+  }).get('/api/v1/releases/unknown_v001.json')
     .reply(404, {
       errors: 'Not Found',
       message: 'Release could not be found by version: unknown_v001'
