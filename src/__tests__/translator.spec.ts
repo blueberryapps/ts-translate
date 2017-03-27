@@ -7,10 +7,12 @@ const locale = 'en';
 const messages = fromJS({
   en: {
     'Homepage headline': 'Super headline',
+    'Interpolated string': 'This was interpolated: %{foo}',
     homepage: {
       'Homepage headline': 'Super headline under scope',
     },
     deep: {
+      'scopedTransInterpolation': '%{foo} (again)',
       scope: {
         'Homepage headline': 'Super headline under deep scope',
       }
@@ -192,5 +194,27 @@ describe('formatPercentage', () =>  {
 
   it('returns formatted number with override options', () =>  {
     expect(new Translator({ messages, locale }).formatPercentage(123456.789, { template: '% %n' })).toEqual('% 123,456.789');
+  });
+});
+
+describe('interpolation', () => {
+  it('detects interpolation', () => {
+    expect(new Translator({ messages, locale }).__hasInterpolation('this has interpolation %{foo}')).toBeTruthy();
+  });
+
+  it('detects interpolation (key must be present)', () => {
+    expect(new Translator({ messages, locale }).__hasInterpolation('this is not interpolation %{}')).toBeFalsy();
+  });
+
+  it('returns interpolated string when no translations is present', () => {
+    expect(new Translator({ messages, locale }).msg('Not translated yet %{status}', { status: 'interpolated' })).toEqual('Not translated yet interpolated');
+  });
+
+  it('returns translated interpolated string', () => {
+    expect(new Translator({ messages, locale }).msg('Interpolated string', { foo: 'bar' })).toEqual('This was interpolated: bar');
+  });
+
+  it('handles combination of interpolation dictionary and message options', () => {
+    expect(new Translator({ messages, locale }).msg('scopedTransInterpolation', { scope: 'deep', foo: 'BAR!' })).toEqual('BAR! (again)');
   });
 });
