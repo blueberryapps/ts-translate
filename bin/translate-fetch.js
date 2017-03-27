@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 const fetchRelease = require('../lib/tasks/fetchRelease').default;
 
-const demandOptions = ['releasesDir']
+const demandOptions = ['releasesDir', 'version']
 if (!process.env.TRANSLATE_API_URL) {
   demandOptions.push('apiUrl')
 }
