@@ -1,10 +1,12 @@
 import { fromJS, Map } from 'immutable';
 import { defaultOptions, DefaultFormatOptions, FormatOptions, formatDate, formatNumber, GivenDate } from './format';
 import defaultFormats from './defaultFormats';
-import { AppStore, TranslatorOptions, Messages, MsgOptions, TranslationResult } from './types';
+import { AppStore, InterpolationDictionary, TranslatorOptions, Messages, MsgOptions, TranslationResult } from './types';
+
+const INTERPOLATION_REGEXP = /%{([\w0-9]+)}/g;
 
 export interface Msg {
-  (key: string | string[], options?: MsgOptions): TranslationResult;
+  (key: string | string[], options?: MsgOptions | InterpolationDictionary | MsgOptions & InterpolationDictionary): TranslationResult;
 }
 
 export interface FormatDate {
@@ -63,9 +65,19 @@ export class Translator {
     }
 
     const result = this.__findTranslation(this.__getPath(key, options));
-    const defaultText = options.disableDefault ? null : defaultTextFromKey;
+    const defaultText = (options as MsgOptions).disableDefault ? null : defaultTextFromKey;
 
-    return Map.isMap(result) ? (result as Messages).toJS() : (result || defaultText);
+    if (Map.isMap(result)) {
+      return (result as Messages).toJS();
+    } else {
+      const returnText = result || defaultText;
+
+      if (typeof returnText === 'string' && this.__hasInterpolation(returnText)) {
+        return this.__interpolate(returnText, (options as InterpolationDictionary));
+      } else {
+        return returnText;
+      }
+    }
   }
 
   formatDate: FormatDate = (givenDate, customFormat) => {
@@ -145,5 +157,15 @@ export class Translator {
     }
 
     return this.messages || fromJS({});
+  }
+
+  __hasInterpolation(msg: string): boolean {
+    return INTERPOLATION_REGEXP.test(msg);
+  }
+
+  __interpolate(msg: string, dictionary: InterpolationDictionary): string {
+    return msg.replace(INTERPOLATION_REGEXP, (val: string, match: string): string => {
+      return dictionary[match].toString();
+    });
   }
 }

@@ -43,7 +43,7 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
         const { translator } = this.context;
 
         const wantedScope = ([] as string[])
-          .concat(scope || [], options.scope || [])
+          .concat(scope || [], (options as MsgOptions).scope || [])
           .filter((x: any) => !!x)
           .join('.');
 

@@ -21,3 +21,7 @@ export interface MsgOptions {
   disableDefault?: boolean;
   scope?: string;
 }
+
+export interface InterpolationDictionary {
+  [key: string]: string | number;
+}
