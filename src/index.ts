@@ -1,4 +1,4 @@
-export { changeLocale } from './actions';
+export { changeLocale, updateMessages, fetchTranslations } from './actions';
 export { formatDate, formatNumber, FormatOptions } from './format';
 export { translationReducer } from './reducer';
 export { Provider } from './Provider';

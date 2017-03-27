@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import * as moment from 'moment';
+import Connector from '../Connector';
 import { Translator } from '../translator';
 import { Messages } from '../types';
 
@@ -216,5 +217,183 @@ describe('interpolation', () => {
 
   it('handles combination of interpolation dictionary and message options', () => {
     expect(new Translator({ messages, locale }).msg('scopedTransInterpolation', { scope: 'deep', foo: 'BAR!' })).toEqual('BAR! (again)');
+  });
+});
+
+describe('connector to translation server', () => {
+  const createSpace = (overrides = {}) => {
+    const dispatch = jest.fn();
+    const connector = new Connector(
+      {
+        sync: true,
+        apiUrl: 'http://translations.blueberry.io',
+        apiToken: 'XYZ'
+      },
+      dispatch
+    );
+    const translator = new Translator({ messages, locale, ...overrides }, connector);
+
+    return {
+      dispatch,
+      connector,
+      translator
+    };
+  };
+
+  it('should return default translation in connector', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg('Something nice')).toEqual('Something nice');
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'en.Something nice': {
+          'data_type': 'string',
+          'key': 'en.Something nice',
+          'text': 'Something nice'
+        }
+      }
+    });
+  });
+
+  it('should return null when disabledDefault', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg('Not translated', { disableDefault: true })).toEqual(null);
+    expect(connector.translationStore.toJS()).toEqual({});
+  });
+
+  it('should return text from messages', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg('Homepage headline')).toEqual('Super headline');
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'en.Homepage headline': {
+          'data_type': 'string',
+          'key': 'en.Homepage headline',
+          'text': 'Super headline'
+        }
+      }
+    });
+  });
+
+  it('returns interpolated string when no translations is present', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg('Not translated yet %{status}', { status: 'interpolated' })).toEqual('Not translated yet interpolated');
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'en.Not translated yet %{status}': {
+          'data_type': 'string',
+          'key': 'en.Not translated yet %{status}',
+          'text': 'Not translated yet %{status}'
+        }
+      }
+    });
+  });
+
+  it('should return text from messages with nested array key', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg(['homepage', 'Homepage headline'])).toEqual('Super headline under scope');
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'en.homepage.Homepage headline': {
+          'data_type': 'string',
+          'key': 'en.homepage.Homepage headline',
+          'text': 'Super headline under scope'
+        }
+      }
+    });
+  });
+
+  it('should return deep object from messages', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg('deep')).toEqual(messages.getIn(['en', 'deep']).toJS());
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'en.deep.scopedTransInterpolation': {
+          'data_type': 'string',
+          'key': 'en.deep.scopedTransInterpolation',
+          'text': '%{foo} (again)'
+        },
+        'en.deep.scope.Homepage headline': {
+          'data_type': 'string',
+          'key': 'en.deep.scope.Homepage headline',
+          'text': 'Super headline under deep scope'
+        }
+      }
+    });
+  });
+
+  it('should return correct data type', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg('formats.number.default.precision')).toEqual(10);
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'en.formats.number.default.precision': {
+          'data_type': 'float',
+          'key': 'en.formats.number.default.precision',
+          'text': 10
+        }
+      }
+    });
+  });
+
+  it('should return text from first found key', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg(['deep.scope.Homepage headline', 'homepage.Homepage headline'])).toEqual('Super headline under deep scope');
+    expect(translator.msg(['deep.scope.unknown', 'homepage.Homepage headline'])).toEqual('Super headline under scope');
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'en.deep.scope.Homepage headline': {
+          'data_type': 'string',
+          'key': 'en.deep.scope.Homepage headline',
+          'text': 'Super headline under deep scope'
+        },
+        'en.homepage.Homepage headline': {
+          'data_type': 'string',
+          'key': 'en.homepage.Homepage headline',
+          'text': 'Super headline under scope'
+        }
+      }
+    });
+  });
+
+  it('should return fallback text in default en from messages', () => {
+    const { translator, connector } = createSpace({ locale: 'es', fallbackLocale: 'en' });
+    expect(translator.msg('Homepage headline', { scope: 'homepage' })).toEqual('Super headline under scope');
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'es.Homepage headline': {
+          'data_type': 'string',
+          'key': 'es.Homepage headline',
+          'text': 'Super headline under scope'
+        }
+      }
+    });
+  });
+
+  it('should return default text when not found in locale and defaultLocale', () => {
+    const { translator, connector } = createSpace({ locale: 'es', fallbackLocale: 'en' });
+    expect(translator.msg('Not translated')).toEqual('Not translated');
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'es.Not translated': {
+          'data_type': 'string',
+          'key': 'es.Not translated',
+          'text': 'Not translated'
+        }
+      }
+    });
+  });
+
+  it('Using array as keys for fallbacking should return default text from first not found key', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg(['deep.scope.unknown', 'homepage.unknown'])).toEqual('deep.scope.unknown');
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'en.deep.scope.unknown': {
+          'data_type': 'string',
+          'key': 'en.deep.scope.unknown',
+          'text': 'deep.scope.unknown'
+        }
+      }
+    });
   });
 });

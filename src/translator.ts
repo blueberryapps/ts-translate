@@ -2,6 +2,7 @@ import { fromJS, Map } from 'immutable';
 import { defaultOptions, DefaultFormatOptions, FormatOptions, formatDate, formatNumber, GivenDate } from './format';
 import defaultFormats from './defaultFormats';
 import { AppStore, InterpolationDictionary, TranslatorOptions, Messages, MsgOptions, TranslationResult } from './types';
+import Connector from './Connector';
 
 const INTERPOLATION_REGEXP = /%{([\w0-9]+)}/g;
 
@@ -29,8 +30,9 @@ export class Translator {
   locale = 'en';
   fallbackLocale = '';
   store: AppStore | null = null;
+  connector: Connector | undefined;
 
-  constructor(options: TranslatorOptions | AppStore) {
+  constructor(options: TranslatorOptions | AppStore, connector?: Connector) {
     if (isAppStore(options)) {
       this.store = options;
     } else {
@@ -38,19 +40,9 @@ export class Translator {
       this.locale = options.locale;
       this.fallbackLocale = options.fallbackLocale || this.fallbackLocale;
     }
+    this.connector = connector;
   }
 
-  __getPath(key: string | string[], options: MsgOptions) {
-    const splittedKey = ([] as string[]).concat(key).join('.').split('.');
-    return options.scope ? options.scope.split('.').concat(splittedKey) : splittedKey;
-  }
-
-  __getResultForKeys(key: string[], locale: string, options: MsgOptions) {
-      return key.reduce(
-        (acc: LookupResult, subKey: string | string[]) =>  acc || this.__findTranslationForLocale(locale, this.__getPath(subKey, options)),
-        null
-      );
-  }
   // tslint:disable-next-line:typedef
   msg: Msg = (key, givenOptions) => {
     const options = givenOptions || {};
@@ -60,6 +52,8 @@ export class Translator {
       const foundMatch = this.__getResultForKeys(key, this.__locale(), options) ||
         this.__getResultForKeys(key, this.__fallbackLocale(), options);
       if (foundMatch && typeof foundMatch !== 'object') {
+        const usedKey = this.__getUsedKeyForKeys(key, this.__locale(), options, ) || this.__getUsedKeyForKeys(key, this.__fallbackLocale(), options, );
+        this.__rememberTranslation(usedKey as string, foundMatch);
         return foundMatch;
       }
     }
@@ -67,11 +61,13 @@ export class Translator {
     const result = this.__findTranslation(this.__getPath(key, options));
     const defaultText = (options as MsgOptions).disableDefault ? null : defaultTextFromKey;
 
+    const returnText = result || defaultText;
+
+    this.__rememberTranslation(returnText === defaultTextFromKey && Array.isArray(key) ? key[0] : key, returnText);
+
     if (Map.isMap(result)) {
       return (result as Messages).toJS();
     } else {
-      const returnText = result || defaultText;
-
       if (typeof returnText === 'string' && this.__hasInterpolation(returnText)) {
         return this.__interpolate(returnText, (options as InterpolationDictionary));
       } else {
@@ -106,6 +102,32 @@ export class Translator {
     const defaultFormat = this.__getOptions('number', 'percentage', options);
 
     return formatNumber(givenNumber, defaultFormat);
+  }
+
+  __rememberTranslation(keyPath: string | string[], message: TranslationResult) {
+    if (!this.connector) return message;
+    if (message) {
+      this.connector.rememberUsedTranslation(this.__locale(), keyPath, message);
+    }
+    return message;
+  }
+  __getPath(key: string | string[], options: MsgOptions) {
+    const splittedKey = ([] as string[]).concat(key).join('.').split('.');
+    return options.scope ? options.scope.split('.').concat(splittedKey) : splittedKey;
+  }
+
+  __getUsedKeyForKeys(key: string[], locale: string, options: MsgOptions) {
+      return key.reduce(
+        (acc: LookupResult, subKey: string | string[]) =>  acc || (this.__findTranslationForLocale(locale, this.__getPath(subKey, options)) && this.__getPath(subKey, options)),
+        null
+      );
+  }
+
+  __getResultForKeys(key: string[], locale: string, options: MsgOptions) {
+      return key.reduce(
+        (acc: LookupResult, subKey: string | string[]) =>  acc || this.__findTranslationForLocale(locale, this.__getPath(subKey, options)),
+        null
+      );
   }
 
   // tslint:disable-next-line:typedef
