@@ -53,7 +53,7 @@ export class Translator {
         this.__getResultForKeys(key, this.__fallbackLocale(), options);
       if (foundMatch && typeof foundMatch !== 'object') {
         const usedKey = this.__getUsedKeyForKeys(key, this.__locale(), options, ) || this.__getUsedKeyForKeys(key, this.__fallbackLocale(), options, );
-        this.__rememberTranslation(usedKey, foundMatch);
+        this.__rememberTranslation(usedKey as string, foundMatch);
         return foundMatch;
       }
     }
