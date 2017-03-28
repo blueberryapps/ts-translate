@@ -25,7 +25,7 @@ const translator = new Translator({
 });
 
 translator.msg('foo') // => 'bar'
-translator.msg('foo', { scope: 'bar' }) // => 'bar'
+translator.msg('foo', { scope: 'bar' }) // => 'FooBar'
 translator.msg('Some headline') // Not found will return text in first argument => 'Some headline'
 translator.msg('Some headline', { scope: 'bar' }) // => 'Super Headline'
 
