@@ -59,7 +59,7 @@ export class Translator {
     }
 
     const result = this.__findTranslation(this.__getPath(key, options));
-    const defaultText = (options as MsgOptions).disableDefault ? null : defaultTextFromKey;
+    const defaultText = (options as MsgOptions).disableDefault ? undefined : defaultTextFromKey;
 
     const returnText = result || defaultText;
 

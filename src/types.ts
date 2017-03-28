@@ -8,7 +8,7 @@ export interface AppStore {
   getState: () => AppState;
 }
 
-export type TranslationResult = string | number | boolean | null | object;
+export type TranslationResult = string | number | boolean | object | undefined;
 export type Messages = Map<string, Map<string, TranslationResult> | TranslationResult>;
 
 export interface TranslatorOptions {
