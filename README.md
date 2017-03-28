@@ -83,6 +83,34 @@ const TranslatedScopedMyComponent = translate('homepage')(MyComponent);
 </ReduxProvider>
 ```
 
+## Interpolation
+
+You can easily interpolate your translations with variables that will be evaluated during the execution of code and inserted into resulting strings.
+
+```javascript
+{
+  messages: fromJS({
+    'This is value of %{key}: %{value}': 'Este es el valor de %{key}: %{value}',
+    noninterpolatedKey: 'You have %{count} unread messages',
+    deeper: {
+      scopedKey: 'This is scoped and shows %{foo}',
+    }
+  })
+}
+```
+
+Usage:
+```javascript
+  msg('This is value of %{key}: %{value}', { key: 'foo', value: 'bar' })
+  // => "Este es el valor de foo: bar"
+  msg('noninterpolatedKey', { count: 42 })
+  // => "You have 42 unread messages"
+  msg('No need for translation to %{action} %{what}', { action: 'show', what: 'that' })
+  // => "No need for translation to show that"
+  msg('scopedKey', { scope: 'deeper', foo: 'BAR!' })
+  // => "This is scoped and shows BAR!"
+```
+
 
 ## Formats Spefication
 
