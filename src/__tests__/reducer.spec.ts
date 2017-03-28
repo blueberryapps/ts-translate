@@ -23,7 +23,6 @@ describe('translate reducer', () => {
     expect(reducer(undefined, action).locale).toEqual('es');
   });
 
-
   it('should update messages', () => {
     const messages = fromJS({
       cs: { home: { title: 'Bar' } },
