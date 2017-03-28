@@ -168,6 +168,7 @@ const initial = {
   fallbackLocale: 'en'
 };
 
+// translation reducer must be added under `translate` key
 const store = createStore(combineReducers({ translate: reducer }), { translate: initial});
 
 class MyComponent extends React.Component {
