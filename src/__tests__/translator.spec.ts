@@ -52,8 +52,8 @@ it('should return default text', () => {
   expect(new Translator({ messages, locale }).msg('Not translated')).toEqual('Not translated');
 });
 
-it('should return null when disabledDefault', () => {
-  expect(new Translator({ messages, locale }).msg('Not translated', { disableDefault: true })).toEqual(null);
+it('should return undefined when disabledDefault', () => {
+  expect(new Translator({ messages, locale }).msg('Not translated', { disableDefault: true })).toEqual(undefined);
 });
 
 it('should return text from messages', () => {
@@ -254,9 +254,9 @@ describe('connector to translation server', () => {
     });
   });
 
-  it('should return null when disabledDefault', () => {
+  it('should return undefined when disabledDefault', () => {
     const { translator, connector } = createSpace();
-    expect(translator.msg('Not translated', { disableDefault: true })).toEqual(null);
+    expect(translator.msg('Not translated', { disableDefault: true })).toEqual(undefined);
     expect(connector.translationStore.toJS()).toEqual({});
   });
 
