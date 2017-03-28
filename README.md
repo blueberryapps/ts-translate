@@ -160,6 +160,22 @@ translator.formatPercentage(123456.78) // => 123.456,78 %
 
 translator.formatDate(new Date, 'shortTime') // => 19:23 -> using alias
 translator.formatDate(new Date, 'long') // => 28.2.2017 19:23:16 -> using alias
+
+translator.formatNumber(123456.78, { precision: 1, separator: ',', delimiter: '' }) // => 123456,7 € -> using custom options
+```
+
+All number formatting options:
+
+```javascript
+{
+  precision: 10, // number of decimal places
+  delimiter: ',', // used in 10,000,000.10
+  format: defaultDateFormat,
+  separator: '.', // used in 10.10
+  template: '%n %u', // %n is placeholder for number, %u is for unit
+  unit: '',
+  trimTrailingZeros: true, // will remove exessive zeros 10.1200 -> 10.12
+}
 ```
 
 ## Translation server
@@ -202,7 +218,7 @@ const config = {
 
 ### On server side preload latest translations from TS
 
-```
+```javascript
 import { fetchTranslations } from 'ts-translates';
 
 fetchTranslations(config)(dispatch);
