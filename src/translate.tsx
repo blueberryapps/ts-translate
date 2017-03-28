@@ -24,6 +24,7 @@ export interface TranslateState {
   locale: string | null;
   messages: Messages | null;
   fallbackLocale: string | null;
+  unsubscribeStore: () => void;
 }
 
 export type TranslateDecorator<P> = (WrappedComponent: React.ComponentClass<P & TranslateProps>) => React.ComponentClass<P>;
@@ -37,7 +38,8 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
       state = {
         locale: null,
         messages: null,
-        fallbackLocale: null
+        fallbackLocale: null,
+        unsubscribeStore: () => {}
       };
 
       static contextTypes = {
@@ -49,13 +51,13 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
         const { store } = this.context;
         if (!store) return;
 
-        store.subscribe(this.updateState);
+        this.setState({ unsubscribeStore: store.subscribe(this.updateState) });
         this.updateState();
       }
 
       componentWillUnmount() {
-        const { store } = this.context;
-        if (store) store.unsubscribe(this.updateState);
+        const { unsubscribeStore } = this.state;
+        if (unsubscribeStore) unsubscribeStore();
       }
 
       updateState = () => {
