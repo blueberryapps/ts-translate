@@ -1,10 +1,19 @@
 # Translate
 
+Helps you to translate text from messages object. Allows you to format numbers, dates,
+interpolate text to string templates, default text as key, scoping translations,
+putting it to React Redux application with Provider and decorator (same pattern as Redux is using).
+
+Also it supports connection to [translation server](https://github.com/blueberryapps/translation-server)
+with possibility to download translation on both server and browser side.
+Freeze translations with releases created in translation server.
+Also there is possibility of live updates of translations via Server Side Events.
+
 ```
 yarn add ts-translate
 ```
 
-## Vanila JS usage
+## Vanilla JS usage
 
 ```javascript
 import { fromJS } from 'immutable';
@@ -46,42 +55,6 @@ translator.formatDate(new Date, 'M.D. YYYY') // => 28.2. 2017 -> using moment.js
 translator.formatDate(new Date, 'short') // => 28.2. 2017 -> using aliases (look down to Formats specification)
 ```
 
-## React + Redux
-
-```javascript
-import { Provider as TranslateProvider, translate, reducer } from 'ts-translate';
-import { fromJS } from 'immutable'
-import { createStore, combineReducers } from 'redux';
-import { Provider as ReduxProvider } from 'react-redux';
-
-const initial = {
-  messages: fromJS({
-    cs: { home: { description: 'Foo', fallback: 'Fallback' } },
-    en: { home: { description: 'enFoo', about: 'Bar' } }
-  }),
-  locale: 'cs',
-  fallbackLocale: 'en'
-};
-
-const store = createStore(combineReducers({ translate: reducer }), { translate: initial});
-
-class MyComponent extends React.Component {
-  render() {
-    const { msg } = this.props;
-    return (<div>{msg('Something nice')}</div>);
-  }
-}
-
-const TranslatedMyComponent = translate()(MyComponent);
-const TranslatedScopedMyComponent = translate('homepage')(MyComponent);
-
-<ReduxProvider store={store} >
-  <TranslateProvider>
-    <TranslatedMyComponent /> // will look for key 'Something nice' in root of locale messages
-    <TranslatedScopedMyComponent /> // will look for key 'Something nice' in homepage scope of locale messages
-  </TranslateProvider>
-</ReduxProvider>
-```
 
 ## Interpolation
 
@@ -176,6 +149,45 @@ All number formatting options:
   unit: '',
   trimTrailingZeros: true, // will remove exessive zeros 10.1200 -> 10.12
 }
+```
+
+## React + Redux
+
+```javascript
+import { Provider as TranslateProvider, translate, reducer, changeLocale } from 'ts-translate';
+import { fromJS } from 'immutable'
+import { createStore, combineReducers } from 'redux';
+import { Provider as ReduxProvider } from 'react-redux';
+
+const initial = {
+  messages: fromJS({
+    cs: { home: { description: 'Foo', fallback: 'Fallback' } },
+    en: { home: { description: 'enFoo', about: 'Bar' } }
+  }),
+  locale: 'cs',
+  fallbackLocale: 'en'
+};
+
+const store = createStore(combineReducers({ translate: reducer }), { translate: initial});
+
+class MyComponent extends React.Component {
+  render() {
+    const { msg } = this.props;
+    return (<div>{msg('Something nice')}</div>);
+  }
+}
+
+const TranslatedMyComponent = translate()(MyComponent);
+const TranslatedScopedMyComponent = translate('home')(MyComponent);
+
+store.dispatch(changeLocale('en')); // change locale to en
+
+<ReduxProvider store={store} >
+  <TranslateProvider>
+    <TranslatedMyComponent /> // will look for key 'Something nice' in root of locale messages
+    <TranslatedScopedMyComponent /> // will look for key 'Something nice' in `home` scope of locale messages
+  </TranslateProvider>
+</ReduxProvider>
 ```
 
 ## Translation server
