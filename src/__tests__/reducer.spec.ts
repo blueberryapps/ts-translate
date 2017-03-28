@@ -5,11 +5,11 @@ const initial = { ...initialState, messages: fromJS({ cs: { home: { description:
 
 describe('translate reducer', () => {
   it('it should return initial state', () => {
-    expect(reducer(undefined, {type: 'INIT', value: ''})).toEqual(initialState);
+    expect(reducer(undefined, {type: 'INIT', payload: ''})).toEqual(initialState);
   });
 
   it('it should revive state', () => {
-    const state = reducer({ messages: { en: { foo: 'bar' }}, locale: 'en'}, {type: 'INIT', value: ''});
+    const state = reducer({ messages: { en: { foo: 'bar' }}, locale: 'en'}, {type: 'INIT', payload: ''});
     expect(Map.isMap(state.messages)).toEqual(true);
     expect(state.messages.getIn(['en', 'foo'])).toEqual('bar');
   });
@@ -17,7 +17,7 @@ describe('translate reducer', () => {
   it('should change locale', () => {
     const action = {
       type: 'TRANSLATE_CHANGE_LOCALE',
-      value: 'es'
+      payload: 'es'
     };
 
     expect(reducer(undefined, action).locale).toEqual('es');
@@ -31,7 +31,7 @@ describe('translate reducer', () => {
 
     const action = {
       type: 'TRANSLATE_UPDATE_MESSAGES',
-      value: messages
+      payload: messages
     };
 
     expect(reducer(undefined, action).messages.toJS()).toEqual(messages.toJS());
