@@ -5,3 +5,4 @@ yarn*.log
 dist
 lib
 src/tasks/__tests__/test_fetch_release/*.json
+npm-debug.log
