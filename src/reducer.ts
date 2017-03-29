@@ -23,12 +23,12 @@ export function translationReducer(state: TranslatorOptions = initialState, acti
 
   switch (action.type) {
 
-    case actions.TRANSLATE_CHANGE_LOCALE: return { ...state, locale: action.value };
+    case actions.TRANSLATE_CHANGE_LOCALE: return { ...state, locale: action.payload };
 
     case actions.TRANSLATE_UPDATE_MESSAGES:
       return {
         ...state,
-        messages: state.messages.mergeDeep(action.value)
+        messages: state.messages.mergeDeep(action.payload)
       };
 
     default: return state;

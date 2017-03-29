@@ -3,7 +3,7 @@ import { Action, Dispatch } from 'redux';
 import { ApiConfig, Messages } from './types';
 
 export interface TranslateAction extends Action {
-  value: string | Messages;
+  payload: string | Messages;
 }
 
 export const TRANSLATE_CHANGE_LOCALE = 'TRANSLATE_CHANGE_LOCALE';
@@ -16,7 +16,7 @@ export const TRANSLATE_UPDATE_MESSAGES = 'TRANSLATE_UPDATE_MESSAGES';
 export function changeLocale(locale: string): TranslateAction {
   return {
     type: TRANSLATE_CHANGE_LOCALE,
-    value: locale
+    payload: locale
   };
 }
 
@@ -28,7 +28,7 @@ export function changeLocale(locale: string): TranslateAction {
 export function updateMessages(messages: Messages): TranslateAction {
   return {
     type: TRANSLATE_UPDATE_MESSAGES,
-    value: messages
+    payload: messages
   };
 }
 
@@ -47,7 +47,7 @@ export function fetchTranslations(config: ApiConfig) {
         dispatch({ type: 'TRANSLATE_FETCH_SUCCESS' });
         return data;
       } catch (error) {
-        dispatch({ type: 'TRANSLATE_FETCH_ERROR', value: error });
+        dispatch({ type: 'TRANSLATE_FETCH_ERROR', payload: error });
       }
     };
 
