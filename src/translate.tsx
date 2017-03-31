@@ -31,7 +31,7 @@ export type TranslateDecorator<P> = (WrappedComponent: React.ComponentClass<P & 
 
 export function translate<P>(scope?: string | string[], overrides?: MsgOptions): TranslateDecorator<P> {
   return (WrappedComponent) => {
-    return class Translate extends React.Component<P, TranslateState> {
+    return class Translate extends React.PureComponent<P, TranslateState> {
 
       static displayName = `Translate(${WrappedComponent && (WrappedComponent.displayName || WrappedComponent.name) || 'Component'})`;
 

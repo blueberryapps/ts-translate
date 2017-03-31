@@ -4,9 +4,9 @@ import * as TestUtils from 'react-addons-test-utils';
 import TranslateProvider from '../Provider';
 import * as React from 'react';
 import reducer from '../reducer';
-import { createStore } from 'redux';
+import { changeLocale, updateMessages } from '../actions';
+import { createStore, combineReducers, Action } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
-import { TranslateAction } from '../actions';
 import { TranslatorOptions } from '../types';
 import { fromJS  } from 'immutable';
 
@@ -19,7 +19,12 @@ const initial: TranslatorOptions = {
   fallbackLocale: 'en'
 };
 
-const store = createStore(({}, action: TranslateAction) => ({ translate: reducer(initial, action) }));
+interface State {
+  translate: TranslatorOptions;
+  counter: number;
+}
+const counter = (state = 0, action: Action) => action.type === 'INC' ? state + 1 : state;
+const store = createStore<State>(combineReducers<State>({ translate: reducer, counter }), { translate: initial, counter: 2 });
 
 describe('Translate Decorator', () => {
   class Passthrough extends React.Component<any, {}> {
@@ -72,5 +77,49 @@ describe('Translate Decorator', () => {
 
   it('should have a msg prop with dotted scope', () => {
     expect(createStub('home.header').props.msg('title')).toEqual('FooBar');
+  });
+
+  describe('shouldComponentUpdate', () => {
+    const DecoratedContainer = translate<{}>()(Passthrough);
+    const getSpy = () => {
+      const container = TestUtils.renderIntoDocument(
+        <ReduxProvider store={store}>
+          <TranslateProvider >
+            <DecoratedContainer />
+          </TranslateProvider>
+        </ReduxProvider>
+      ) as  React.Component<{}, {}>;
+
+      const instance = TestUtils.findRenderedComponentWithType(container, DecoratedContainer as React.ClassType<any, any, any>);
+      const spy = jest.fn(instance.render);
+      instance.render = spy;
+      return spy;
+    };
+
+    it('should rerender on locale change', () => {
+      const spy = getSpy();
+      store.dispatch(changeLocale('en'));
+      store.dispatch(changeLocale('en'));
+      store.dispatch(changeLocale('cs'));
+      store.dispatch(changeLocale('cs'));
+      store.dispatch(changeLocale('en'));
+      store.dispatch(changeLocale('en'));
+
+      expect(spy.mock.calls.length).toEqual(3);
+    });
+
+    it('should rerender on message change', () => {
+      const spy = getSpy();
+      store.dispatch(updateMessages(fromJS({ en: { foo: 'bar' } })));
+      store.dispatch(updateMessages(fromJS({ en: { foo: 'bar' } })));
+      store.dispatch(updateMessages(fromJS({ en: { foo: 'bar2' } })));
+      store.dispatch(updateMessages(fromJS({ en: { foo: 'bar2' } })));
+
+      expect(spy.mock.calls.length).toEqual(2);
+      store.dispatch({ type: 'INC' });
+      store.dispatch({ type: 'INC' });
+      store.dispatch({ type: 'INC' });
+      expect(spy.mock.calls.length).toEqual(2);
+    });
   });
 });
