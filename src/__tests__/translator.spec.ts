@@ -360,9 +360,9 @@ describe('connector to translation server', () => {
     expect(translator.msg('Homepage headline', { scope: 'homepage' })).toEqual('Super headline under scope');
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
-        'es.Homepage headline': {
+        'es.homepage.Homepage headline': {
           'data_type': 'string',
-          'key': 'es.Homepage headline',
+          'key': 'es.homepage.Homepage headline',
           'text': 'Super headline under scope'
         }
       }
@@ -392,6 +392,20 @@ describe('connector to translation server', () => {
           'data_type': 'string',
           'key': 'en.deep.scope.unknown',
           'text': 'deep.scope.unknown'
+        }
+      }
+    });
+  });
+
+  it('Using array as keys for fallbacking should return default text from first not found key with scope', () => {
+    const { translator, connector } = createSpace();
+    expect(translator.msg(['scope.unknown', 'homepage.unknown'], { scope: 'deep' })).toEqual('scope.unknown');
+    expect(connector.translationStore.toJS()).toEqual({
+      '/': {
+        'en.deep.scope.unknown': {
+          'data_type': 'string',
+          'key': 'en.deep.scope.unknown',
+          'text': 'scope.unknown'
         }
       }
     });

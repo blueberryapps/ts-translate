@@ -64,7 +64,7 @@ export class Translator {
 
     const returnText = result || defaultText;
 
-    this.__rememberTranslation(returnText === defaultTextFromKey && Array.isArray(key) ? keyPaths[0] : keyPaths, returnText);
+    this.__rememberTranslation(returnText === defaultTextFromKey && Array.isArray(key) ? this.__resolveScope(key[0], options) : keyPaths, returnText);
 
     if (Map.isMap(result)) {
       return (result as Messages).toJS();
@@ -111,6 +111,10 @@ export class Translator {
       this.connector.rememberUsedTranslation(this.__locale(), keyPath, message);
     }
     return message;
+  }
+
+  __resolveScope(key: string, options: MsgOptions) {
+    return options.scope ? options.scope.split('.').concat(key).join('.') : key
   }
 
   __getPath(key: string | string[], options: MsgOptions) {
