@@ -1,6 +1,6 @@
 import createCnt from './createCnt';
 import { Translator, Msg, FormatDate, FormatNumber, Resolve } from './translator';
-import { Messages, MsgOptions } from './types';
+import { Messages, MsgOptions, TranslationResult } from './types';
 
 import *  as React from 'react';
 
@@ -29,7 +29,7 @@ export interface TranslateProps {
 
 export interface TranslateState {
   locale: string | null;
-  messages: Messages | null;
+  messages: TranslationResult | null;
   fallbackLocale: string | null;
   unsubscribeStore: () => void;
 }
@@ -73,7 +73,8 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
 
       updateState = () => {
         const { store } = this.context;
-        const {messages, locale, fallbackLocale} = store.getState().translate;
+        const { locale, fallbackLocale, messages } = store.getState().translate;
+
         this.setState({ messages, locale, fallbackLocale });
       }
 

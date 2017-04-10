@@ -12,7 +12,7 @@ export interface CreateCnt {
   (key: string, result: TranslationResult): JSX.Element;
 }
 
-const createCnt: CreateCnt = (key, result) => {
+export const createCnt: CreateCnt = (key, result) => {
   class Cnt extends React.Component<CntProps, void> {
     render() {
       const { content, usedKey } = this.props;
@@ -35,14 +35,15 @@ const createCnt: CreateCnt = (key, result) => {
   } as JSX.Element;
 };
 
-let memoizeCache = Map<string, Map<TranslationResult, JSX.Element>>();
-const memoizedCreateCnt: CreateCnt = (key, result) => {
-  const cachedResult = memoizeCache.getIn([key, result]);
-  if (cachedResult) return cachedResult;
+export const memoizeCreateCnt = (fn: CreateCnt) => {
+  let memoizeCache = Map<string, Map<TranslationResult, JSX.Element>>();
+  return (key: string, result: TranslationResult): JSX.Element => {
+    if (memoizeCache.hasIn([key, result])) return memoizeCache.getIn([key, result]);
 
-  const newResult = createCnt(key, result);
-  memoizeCache = memoizeCache.setIn([key, result], newResult);
-  return newResult;
+    const newResult = fn(key, result);
+    memoizeCache = memoizeCache.setIn([key, result], newResult);
+    return newResult;
+  };
 };
 
-export default memoizedCreateCnt;
+export default memoizeCreateCnt(createCnt);
