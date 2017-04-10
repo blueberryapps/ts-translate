@@ -59,11 +59,12 @@ export class Translator {
     }
 
     const result = this.__findTranslation(this.__getPath(key, options));
+    const keyPaths = this.__getPath(key, options);
     const defaultText = (options as MsgOptions).disableDefault ? undefined : defaultTextFromKey;
 
     const returnText = result || defaultText;
 
-    this.__rememberTranslation(returnText === defaultTextFromKey && Array.isArray(key) ? key[0] : key, returnText);
+    this.__rememberTranslation(returnText === defaultTextFromKey && Array.isArray(key) ? keyPaths[0] : keyPaths, returnText);
 
     if (Map.isMap(result)) {
       return (result as Messages).toJS();
@@ -111,6 +112,7 @@ export class Translator {
     }
     return message;
   }
+
   __getPath(key: string | string[], options: MsgOptions) {
     const splittedKey = ([] as string[]).concat(key).join('.').split('.');
     return options.scope ? options.scope.split('.').concat(splittedKey) : splittedKey;
