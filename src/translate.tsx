@@ -51,12 +51,16 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
         const { store } = this.context;
         if (!store) return;
 
-        this.setState({ unsubscribeStore: store.subscribe(this.updateState) });
+        this.setState({
+          unsubscribeStore: store.subscribe(this.updateState),
+        });
+
         this.updateState();
       }
 
       componentWillUnmount() {
         const { unsubscribeStore } = this.state;
+
         if (unsubscribeStore) unsubscribeStore();
       }
 
