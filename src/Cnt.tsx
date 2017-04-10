@@ -10,7 +10,7 @@ export default class Cnt extends React.Component<CntProps, void> {
     const { content } = this.props;
 
     if (!content) {
-      return null
+      return null;
     }
 
     return (
