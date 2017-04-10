@@ -81,7 +81,7 @@ export class Translator {
     const defaultText = (options as MsgOptions).disableDefault ? undefined : defaultTextFromKey;
 
     const returnText = result || defaultText;
-    const usedKey = (returnText === defaultTextFromKey && Array.isArray(key) ? this.__resolveScope(key[0], options) : keyPaths) as string;
+    const usedKey = (returnText === defaultTextFromKey && Array.isArray(key) ? this.__resolveScope(key[0], options) as string : keyPaths.join('.')) as string;
 
     this.__rememberTranslation(usedKey, returnText);
 
