@@ -68,7 +68,7 @@ export class Translator {
     let memoizeCache = Map();
 
     return (key, givenOptions) => {
-      const cacheKey = [this.__locale(), key, !givenOptions ? '' : JSON.stringify(givenOptions)];
+      const cacheKey = [this.__locale(), this.__fallbackLocale(), this.__messages().hashCode(), key, !givenOptions ? '' : JSON.stringify(givenOptions)];
 
       if (memoizeCache.hasIn(cacheKey)) return memoizeCache.getIn(cacheKey);
 
