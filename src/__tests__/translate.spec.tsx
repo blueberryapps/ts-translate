@@ -56,27 +56,35 @@ describe('Translate Decorator', () => {
   };
 
   it('should have a msg prop', () => {
-    expect(createStub().props.msg('description', { scope: 'home' })).toEqual('Foo');
+    expect(createStub().props.msg('description', { scope: 'home' }).toString()).toEqual('Foo');
   });
 
   it('should have default message', () => {
-    expect(createStub().props.msg('Default Message', { scope: 'home' })).toEqual('Default Message');
+    expect(createStub().props.msg('Default Message', { scope: 'home' }).toString()).toEqual('Default Message');
+  });
+
+  it('should have a hasMsg prop', () => {
+    expect(createStub().props.hasMsg('description', { scope: 'home' })).toEqual(true);
+  });
+
+  it('should have a hasMsg message and return false for default text', () => {
+    expect(createStub().props.hasMsg('Default Message', { scope: 'home' })).toEqual(false);
   });
 
   it('should return undefined when disableDefault', () => {
-    expect(createStub('', { disableDefault: true }).props.msg('Default Message', { scope: 'home' })).toEqual(undefined);
+    expect(createStub('', { disableDefault: true }).props.msg('Default Message', { scope: 'home' }).toString()).toEqual(undefined);
   });
 
   it('should have a msg prop with scope', () => {
-    expect(createStub('home').props.msg('description')).toEqual('Foo');
+    expect(createStub('home').props.msg('description').toString()).toEqual('Foo');
   });
 
   it('should have a msg prop with array scope', () => {
-    expect(createStub(['home', 'header']).props.msg('title')).toEqual('FooBar');
+    expect(createStub(['home', 'header']).props.msg('title').toString()).toEqual('FooBar');
   });
 
   it('should have a msg prop with dotted scope', () => {
-    expect(createStub('home.header').props.msg('title')).toEqual('FooBar');
+    expect(createStub('home.header').props.msg('title').toString()).toEqual('FooBar');
   });
 
   describe('shouldComponentUpdate', () => {

@@ -1,5 +1,5 @@
-import Cnt from './Cnt';
-import { Translator, Msg, FormatDate, FormatNumber } from './translator';
+import createCnt from './createCnt';
+import { Translator, Msg, FormatDate, FormatNumber, Resolve } from './translator';
 import { Messages, MsgOptions } from './types';
 
 import *  as React from 'react';
@@ -8,9 +8,16 @@ export interface CntFunc {
   (key: string, options?: MsgOptions): JSX.Element;
 }
 
+export interface HasMsgFunc {
+  (key: string, options?: MsgOptions): boolean;
+}
+
 export interface TranslateProps {
   cnt: CntFunc;
-  msg: Msg;
+  msg: CntFunc;
+  text: Msg;
+  hasMsg: HasMsgFunc;
+  resolveMsg: Resolve;
   formatDate: FormatDate;
   formatNumber: FormatNumber;
   formatCurrency: FormatNumber;
@@ -70,12 +77,7 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
         this.setState({ messages, locale, fallbackLocale });
       }
 
-      // tslint:disable-next-line:typedef
-      cnt: CntFunc = (key, options = {}) => {
-        return (<Cnt content={this.msg(key, options)} />);
-      }
-
-      msg: Msg = (key, givenOptions) => {
+      resolveMsg: Resolve = (key, givenOptions = {}) => {
         const options = givenOptions || {};
         const { translator } = this.context;
 
@@ -84,7 +86,25 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
           .filter((x: any) => !!x)
           .join('.');
 
-        return translator.msg(key, { ...options, ...overrides, scope: wantedScope });
+        return translator.resolve(key, { ...options, ...overrides, scope: wantedScope });
+      }
+
+      // tslint:disable-next-line:typedef
+      text: Msg = (key, options = {}) => this.resolveMsg(key, options).result;
+
+      // tslint:disable-next-line:typedef
+      cnt: CntFunc = (key, options = {}) => this.msg(key, options);
+
+      // tslint:disable-next-line:typedef
+      msg: CntFunc = (key, options = {}) => {
+        const { result, usedKey } = this.resolveMsg(key, options);
+
+        return createCnt(usedKey, result);
+      }
+
+      hasMsg: HasMsgFunc = (key, options = {}) => {
+        const { result } = this.resolveMsg(key, { ...options, disableDefault: true });
+        return !!result && `${result}`.length > 0;
       }
 
       getTranslateMethods() {
@@ -94,6 +114,9 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
         return {
           cnt: this.cnt,
           msg: this.msg,
+          text: this.text,
+          hasMsg: this.hasMsg,
+          resolveMsg: this.resolveMsg,
           formatDate,
           formatNumber,
           formatCurrency,

@@ -10,6 +10,19 @@ export interface Msg {
   (key: string | string[], options?: MsgOptions | InterpolationDictionary | MsgOptions & InterpolationDictionary): TranslationResult;
 }
 
+export interface Key {
+  (key: string | string[], options?: MsgOptions | InterpolationDictionary | MsgOptions & InterpolationDictionary): string;
+}
+
+export interface ResolveResult {
+  result: TranslationResult;
+  usedKey: string;
+}
+
+export interface Resolve {
+  (key: string | string[], options?: MsgOptions | InterpolationDictionary | MsgOptions & InterpolationDictionary): ResolveResult;
+}
+
 export interface FormatDate {
   (givenDate: GivenDate, customFormat?: string): string;
 }
@@ -44,7 +57,12 @@ export class Translator {
   }
 
   // tslint:disable-next-line:typedef
-  msg: Msg = (key, givenOptions) => {
+  key: Key = (key, givenOptions) => this.resolve(key, givenOptions).usedKey;
+
+  // tslint:disable-next-line:typedef
+  msg: Msg = (key, givenOptions) => this.resolve(key, givenOptions).result;
+
+  resolve: Resolve = (key, givenOptions) => {
     const options = givenOptions || {};
     const defaultTextFromKey = Array.isArray(key) ? key[0] : key;
 
@@ -52,9 +70,9 @@ export class Translator {
       const foundMatch = this.__getResultForKeys(key, this.__locale(), options) ||
         this.__getResultForKeys(key, this.__fallbackLocale(), options);
       if (foundMatch && typeof foundMatch !== 'object') {
-        const usedKey = this.__getUsedKeyForKeys(key, this.__locale(), options, ) || this.__getUsedKeyForKeys(key, this.__fallbackLocale(), options, );
-        this.__rememberTranslation(usedKey as string, foundMatch);
-        return foundMatch;
+        const usedKey = (this.__getUsedKeyForKeys(key, this.__locale(), options) || this.__getUsedKeyForKeys(key, this.__fallbackLocale(), options) || key).join('.') as string;
+        this.__rememberTranslation(usedKey, foundMatch);
+        return { result: foundMatch, usedKey } as ResolveResult;
       }
     }
 
@@ -63,16 +81,17 @@ export class Translator {
     const defaultText = (options as MsgOptions).disableDefault ? undefined : defaultTextFromKey;
 
     const returnText = result || defaultText;
+    const usedKey = (returnText === defaultTextFromKey && Array.isArray(key) ? this.__resolveScope(key[0], options) : keyPaths) as string;
 
-    this.__rememberTranslation(returnText === defaultTextFromKey && Array.isArray(key) ? this.__resolveScope(key[0], options) : keyPaths, returnText);
+    this.__rememberTranslation(usedKey, returnText);
 
     if (Map.isMap(result)) {
-      return (result as Messages).toJS();
+      return { result: (result as Messages).toJS(), usedKey } as ResolveResult;
     } else {
       if (typeof returnText === 'string' && this.__hasInterpolation(returnText)) {
-        return this.__interpolate(returnText, (options as InterpolationDictionary));
+        return { result: this.__interpolate(returnText, (options as InterpolationDictionary)), usedKey } as ResolveResult;
       } else {
-        return returnText;
+        return { result: returnText, usedKey } as ResolveResult;
       }
     }
   }
@@ -113,19 +132,19 @@ export class Translator {
     return message;
   }
 
-  __resolveScope(key: string, options: MsgOptions) {
+  __resolveScope(key: string, options: MsgOptions): string {
     return options.scope ? options.scope.split('.').concat(key).join('.') : key;
   }
 
-  __getPath(key: string | string[], options: MsgOptions) {
+  __getPath(key: string | string[], options: MsgOptions): string[] {
     const splittedKey = ([] as string[]).concat(key).join('.').split('.');
     return options.scope ? options.scope.split('.').concat(splittedKey) : splittedKey;
   }
 
-  __getUsedKeyForKeys(key: string[], locale: string, options: MsgOptions) {
+  __getUsedKeyForKeys(key: string[], locale: string, options: MsgOptions): string[] | false {
       return key.reduce(
-        (acc: LookupResult, subKey: string | string[]) =>  acc || (this.__findTranslationForLocale(locale, this.__getPath(subKey, options)) && this.__getPath(subKey, options)),
-        null
+        (acc: string[] | false, subKey: string | string[]) =>  acc || (!!this.__findTranslationForLocale(locale, this.__getPath(subKey, options)) && this.__getPath(subKey, options)),
+        false
       );
   }
 

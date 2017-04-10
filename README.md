@@ -33,10 +33,14 @@ const translator = new Translator({
   locale: 'en'
 });
 
+translator.text('foo') // => 'bar'
 translator.msg('foo') // => 'bar'
 translator.msg('foo', { scope: 'bar' }) // => 'FooBar'
 translator.msg('Some headline') // Not found will return text in first argument => 'Some headline'
 translator.msg('Some headline', { scope: 'bar' }) // => 'Super Headline'
+
+translator.hasMsg('foo') // => true'
+translator.hasMsg('Some headline') //=> false
 
 translator.msg('Not found text', { disableDefault: true })
 // => Will not return default text (Not found text) instead it will return 'null'
@@ -55,6 +59,11 @@ translator.formatDate(new Date, 'M.D. YYYY') // => 28.2. 2017 -> using moment.js
 translator.formatDate(new Date, 'short') // => 28.2. 2017 -> using aliases (look down to Formats specification)
 ```
 
+## Msg & Cnt
+
+`msg()` is returning by default React component which has set `toString()` set to return translated result so `msg()` will work correctly in `<input placeholder={msg('placeholder')} />`. `cnt()` is alias for `msg()` (deprecated).
+
+if you need to return only translated result use `text()`.
 
 ## Interpolation
 
