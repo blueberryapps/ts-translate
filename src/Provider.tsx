@@ -15,6 +15,7 @@ export class Provider extends React.Component<ProviderProps, void> { // eslint-d
   };
 
   connector?: Connector = undefined;
+  translator?: Translator = undefined;
 
   static contextTypes = {
     store: React.PropTypes.object
@@ -40,8 +41,12 @@ export class Provider extends React.Component<ProviderProps, void> { // eslint-d
         : undefined;
     }
 
+    if (!this.translator) {
+      this.translator = new Translator(store, this.connector);
+    }
+
     return {
-      translator: new Translator(store, this.connector)
+      translator: this.translator
     };
   }
 
