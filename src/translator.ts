@@ -114,7 +114,7 @@ export class Translator {
   }
 
   __resolveScope(key: string, options: MsgOptions) {
-    return options.scope ? options.scope.split('.').concat(key).join('.') : key
+    return options.scope ? options.scope.split('.').concat(key).join('.') : key;
   }
 
   __getPath(key: string | string[], options: MsgOptions) {
