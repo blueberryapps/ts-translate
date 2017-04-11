@@ -44,7 +44,6 @@ export class Translator {
   fallbackLocale = '';
   store: AppStore | null = null;
   connector: Connector | undefined;
-  resolve: Resolve;
 
   constructor(options: TranslatorOptions | AppStore, connector?: Connector) {
     if (isAppStore(options)) {
@@ -55,7 +54,6 @@ export class Translator {
       this.fallbackLocale = options.fallbackLocale || this.fallbackLocale;
     }
     this.connector = connector;
-    this.resolve = this._memoizeResolve(this._resolve);
   }
 
   // tslint:disable-next-line:typedef
@@ -64,22 +62,7 @@ export class Translator {
   // tslint:disable-next-line:typedef
   msg: Msg = (key, givenOptions) => this.resolve(key, givenOptions).result;
 
-  _memoizeResolve = (fn: Resolve): Resolve => {
-    let memoizeCache = Map();
-
-    return (key, givenOptions) => {
-      const cacheKey = [this.__locale(), this.__fallbackLocale(), this.__messages().hashCode(), key, !givenOptions ? '' : JSON.stringify(givenOptions)];
-
-      if (memoizeCache.hasIn(cacheKey)) return memoizeCache.getIn(cacheKey);
-
-      const newResult = this._resolve(key, givenOptions);
-      memoizeCache = memoizeCache.setIn(cacheKey, newResult);
-
-      return newResult;
-    };
-  }
-
-  _resolve: Resolve = (key, givenOptions) => {
+  resolve: Resolve = (key, givenOptions) => {
     const options = givenOptions || {};
     const defaultTextFromKey = Array.isArray(key) ? key[0] : key;
 
