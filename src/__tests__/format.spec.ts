@@ -1,7 +1,7 @@
-import { defaultOptions, formatCurrency, formatNumber, formatDate, mergeOptionsWithDefault, roundNumber } from '../format';
 import * as moment from 'moment';
-import 'moment/locale/es';
 import 'moment/locale/cs';
+import 'moment/locale/es';
+import { defaultOptions, formatCurrency, formatDate, formatNumber, mergeOptionsWithDefault, roundNumber } from '../format';
 
 describe('mergeOptionsWithDefault', () => {
   it('returns default options', () => {
@@ -18,32 +18,32 @@ describe('formatNumber', () => {
     {
       input: 123.23,
       output: '123',
-      options: { precision: 0 }
+      options: { precision: 0 },
     },
     {
       input: 123.23,
       output: '123.2',
-      options: { precision: 1 }
+      options: { precision: 1 },
     },
     {
       input: 123.23,
       output: '123s2',
-      options: { precision: 1, separator: 's' }
+      options: { precision: 1, separator: 's' },
     },
     {
       input: 1231112.3,
       output: '1d231d112s3',
-      options: { precision: 1, delimiter: 'd', separator: 's' }
+      options: { precision: 1, delimiter: 'd', separator: 's' },
     },
     {
       input: 98.3,
       output: '98.3 %',
-      options: { precision: 1, template: '%n %' }
+      options: { precision: 1, template: '%n %' },
     },
     {
       input: 98.3,
       output: '98.3 %',
-      options: { precision: 1, unit: '%', template: '%n %u' }
+      options: { precision: 1, unit: '%', template: '%n %u' },
     },
     {
       input: 98.3,
@@ -60,7 +60,7 @@ describe('formatNumber', () => {
       output: '9,830',
       options: { precision: 10 },
     },
-  ].forEach(test => {
+  ].forEach((test) => {
     it(`from: ${test.input} produce: ${test.output} with options: ${JSON.stringify(test.options)}`, () => {
       expect(formatNumber(test.input, test.options)).toEqual(test.output);
     });
@@ -79,34 +79,34 @@ describe('formatCurrency', () => {
     {
       input: 98.3,
       output: '98.3$',
-      options: { precision: 1, unit: '$', template: '%n%u' }
+      options: { precision: 1, unit: '$', template: '%n%u' },
     },
     {
       input: 98.3,
       output: '$98.3',
-      options: { precision: 1, unit: '$', template: '%u%n' }
+      options: { precision: 1, unit: '$', template: '%u%n' },
     },
     {
       input: 98.3,
       output: '$98.30',
-      options: { precision: 2, unit: '$', template: '%u%n' }
+      options: { precision: 2, unit: '$', template: '%u%n' },
     },
     {
       input: 98,
       output: '$98.00',
-      options: { precision: 2, unit: '$', template: '%u%n' }
+      options: { precision: 2, unit: '$', template: '%u%n' },
     },
     {
       input: 98,
       output: '98,00 €',
-      options: { precision: 2, separator: ',', unit: '€', template: '%n %u' }
+      options: { precision: 2, separator: ',', unit: '€', template: '%n %u' },
     },
     {
       input: 9800,
       output: '9 800,00 €',
-      options: { precision: 2, separator: ',', delimiter: ' ', unit: '€', template: '%n %u' }
+      options: { precision: 2, separator: ',', delimiter: ' ', unit: '€', template: '%n %u' },
     },
-  ].forEach(test => {
+  ].forEach((test) => {
     it(`from: ${test.input} produce: ${test.output} with options: ${JSON.stringify(test.options)}`, () => {
       expect(formatCurrency(test.input, test.options)).toEqual(test.output);
     });

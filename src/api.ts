@@ -1,6 +1,6 @@
 import * as fetch from 'isomorphic-fetch';
 import * as url from 'url';
-import { ApiConfig, ApiMethod, ApiEndpoint, ApiData } from './types';
+import { ApiConfig, ApiData, ApiEndpoint, ApiMethod } from './types';
 
 export function apiUrlResolve(apiUrl: string, endpoint: ApiEndpoint) {
   return url.resolve(apiUrl, endpoint);
@@ -24,17 +24,18 @@ export default async function api(config: ApiConfig, method: ApiMethod, endpoint
       credentials: 'include',
       headers:     {
         'Content-type': 'application/json',
-        Authorization: `Token token=${config.apiToken}`
+        Authorization: `Token token=${config.apiToken}`,
       },
-      body: data ? JSON.stringify(data) : null
+      body: data ? JSON.stringify(data) : null,
     });
   } catch (e) {
     console.error(`TRANSLATE: Trying to execute API Call to ${config.apiUrl} ${method}:${apiUrl} with data ${JSON.stringify(data || {})} but got: ${e.message}`);  // eslint-disable-line no-console
     return {};
   }
 
-  if (/[23]\d{2}/.test(response.status.toString()))
+  if (/[23]\d{2}/.test(response.status.toString())) {
     return await response.json();
+  }
 
   throw new Error(`Invalid response status code: ${response.status} for ${method}:${apiUrl} with data ${JSON.stringify(data || {})}`);
 }

@@ -1,12 +1,12 @@
 import { fromJS, Map } from 'immutable';
 import * as actions from './actions';
-import { Messages, TranslatorOptions } from './types';
 import { TranslateAction } from './actions';
+import { Messages, TranslatorOptions } from './types';
 
 export const initialState: TranslatorOptions = {
   locale: 'en',
   fallbackLocale: 'en',
-  messages: fromJS({}) as Messages
+  messages: fromJS({}) as Messages,
 };
 
 /**
@@ -28,7 +28,7 @@ export function translationReducer(state: TranslatorOptions = initialState, acti
     case actions.TRANSLATE_UPDATE_MESSAGES:
       return {
         ...state,
-        messages: state.messages.mergeDeep(action.payload)
+        messages: state.messages.mergeDeep(action.payload),
       };
 
     default: return state;

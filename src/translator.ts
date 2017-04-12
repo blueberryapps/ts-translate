@@ -1,8 +1,8 @@
 import { fromJS, Map } from 'immutable';
-import { defaultOptions, DefaultFormatOptions, FormatOptions, formatDate, formatNumber, GivenDate } from './format';
-import defaultFormats from './defaultFormats';
-import { AppStore, InterpolationDictionary, TranslatorOptions, Messages, MsgOptions, TranslationResult } from './types';
 import Connector from './Connector';
+import defaultFormats from './defaultFormats';
+import { DefaultFormatOptions, defaultOptions, formatDate, formatNumber, FormatOptions, GivenDate } from './format';
+import { AppStore, InterpolationDictionary, Messages, MsgOptions, TranslationResult, TranslatorOptions } from './types';
 
 const INTERPOLATION_REGEXP = /%{([\w0-9]+)}/g;
 
@@ -48,7 +48,7 @@ export class Translator {
   fallbackLocale = '';
   store: AppStore | null = null;
   connector: Connector | undefined;
-  listeners: MsgClickHanlder[];
+  listeners: MsgClickHanlder[] = [];
 
   constructor(options: TranslatorOptions | AppStore, connector?: Connector) {
     if (isAppStore(options)) {
@@ -62,7 +62,7 @@ export class Translator {
   }
 
   onMsgClick: MsgClickHanlder = (key, element) => {
-    this.listeners.forEach(listener => listener(key, element));
+    this.listeners.forEach((listener) => listener(key, element));
   }
 
   subscribeMsgClick(listener: MsgClickHanlder): () => void {
@@ -144,7 +144,10 @@ export class Translator {
   }
 
   __rememberTranslation(keyPath: string | string[], message: TranslationResult) {
-    if (!this.connector) return message;
+    if (!this.connector) {
+      return message;
+    }
+
     if (message) {
       this.connector.rememberUsedTranslation(this.__locale(), keyPath, message);
     }
@@ -163,14 +166,14 @@ export class Translator {
   __getUsedKeyForKeys(key: string[], locale: string, options: MsgOptions): string[] | false {
       return key.reduce(
         (acc: string[] | false, subKey: string | string[]) =>  acc || (!!this.__findTranslationForLocale(locale, this.__getPath(subKey, options)) && this.__getPath(subKey, options)),
-        false
+        false,
       );
   }
 
   __getResultForKeys(key: string[], locale: string, options: MsgOptions) {
       return key.reduce(
         (acc: LookupResult, subKey: string | string[]) =>  acc || this.__findTranslationForLocale(locale, this.__getPath(subKey, options)),
-        null
+        null,
       );
   }
 
@@ -186,7 +189,7 @@ export class Translator {
       ...(key && defaultFormats.formats[type][key]),
       ...(defaultTypeOptions && defaultTypeOptions.toJS()),
       ...(keyOptions && keyOptions.toJS()),
-      ...overrideOptions
+      ...overrideOptions,
     };
 
     return result;

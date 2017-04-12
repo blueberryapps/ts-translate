@@ -4,8 +4,9 @@ import api from '../api';
 import { ApiConfig, Version } from '../types';
 
 export default async function fetchRelease(config: ApiConfig, version: Version) {
-  if (!config.releasesDir)
+  if (!config.releasesDir) {
     throw new Error('Missing releasesDir in config');
+  }
 
   try {
     // tslint:disable-next-line:no-string-literal

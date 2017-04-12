@@ -1,5 +1,5 @@
 import createCnt from './createCnt';
-import { Translator, Msg, FormatDate, FormatNumber, Resolve } from './translator';
+import { FormatDate, FormatNumber, Msg, Resolve, Translator } from './translator';
 import { Messages, MsgOptions, TranslationResult } from './types';
 
 import *  as React from 'react';
@@ -46,17 +46,19 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
         locale: null,
         messages: null,
         fallbackLocale: null,
-        unsubscribeStore: () => {}
+        unsubscribeStore: () => {},
       };
 
       static contextTypes = {
         store: React.PropTypes.object,
-        translator: React.PropTypes.object
+        translator: React.PropTypes.object,
       };
 
       componentWillMount() {
         const { store } = this.context;
-        if (!store) return;
+        if (!store) {
+          return;
+        }
 
         this.setState({
           unsubscribeStore: store.subscribe(this.updateState),
@@ -68,7 +70,9 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
       componentWillUnmount() {
         const { unsubscribeStore } = this.state;
 
-        if (unsubscribeStore) unsubscribeStore();
+        if (unsubscribeStore) {
+          unsubscribeStore();
+        }
       }
 
       updateState = () => {
@@ -125,7 +129,7 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
           formatPercentage,
           translator,
           translateLocale: translator.__locale(),
-          translateMessages: translator.__messages()
+          translateMessages: translator.__messages(),
         };
       }
 

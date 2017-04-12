@@ -1,7 +1,7 @@
-import fetchRelease from '../fetchRelease';
+import * as fs from 'fs';
 import * as nock from 'nock';
 import * as path from 'path';
-import * as fs from 'fs';
+import fetchRelease from '../fetchRelease';
 
 describe('fetchRelease()', () => {
   const releasesDir = path.join(__dirname, 'test_fetch_release');
@@ -17,20 +17,20 @@ describe('fetchRelease()', () => {
   nock('http://translation.cz', {
     reqheaders: {
       Authorization: 'Token token=X',
-      'Content-type': 'application/json'
-    }
+      'Content-type': 'application/json',
+    },
   }).get('/api/v1/releases/cs_v001.json')
     .reply(200, { cs: { foo: 'Bar' } });
 
   nock('http://translation.cz', {
     reqheaders: {
       Authorization: 'Token token=X',
-      'Content-type': 'application/json'
-    }
+      'Content-type': 'application/json',
+    },
   }).get('/api/v1/releases/unknown_v001.json')
     .reply(404, {
       errors: 'Not Found',
-      message: 'Release could not be found by version: unknown_v001'
+      message: 'Release could not be found by version: unknown_v001',
     });
 
   it('calls API with know version', async () => {

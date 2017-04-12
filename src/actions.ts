@@ -1,5 +1,5 @@
-import api from './api';
 import { Action, Dispatch } from 'redux';
+import api from './api';
 import { ApiConfig, Messages } from './types';
 
 export interface TranslateAction extends Action {
@@ -16,7 +16,7 @@ export const TRANSLATE_UPDATE_MESSAGES = 'TRANSLATE_UPDATE_MESSAGES';
 export function changeLocale(locale: string): TranslateAction {
   return {
     type: TRANSLATE_CHANGE_LOCALE,
-    payload: locale
+    payload: locale,
   };
 }
 
@@ -28,7 +28,7 @@ export function changeLocale(locale: string): TranslateAction {
 export function updateMessages(messages: Messages): TranslateAction {
   return {
     type: TRANSLATE_UPDATE_MESSAGES,
-    payload: messages
+    payload: messages,
   };
 }
 

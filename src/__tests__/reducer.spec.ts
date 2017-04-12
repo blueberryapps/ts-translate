@@ -1,4 +1,4 @@
-import { Map, fromJS } from 'immutable';
+import { fromJS, Map } from 'immutable';
 import reducer, { initialState } from '../reducer';
 
 const initial = { ...initialState, messages: fromJS({ cs: { home: { description: 'Foo' } } }) };
@@ -17,7 +17,7 @@ describe('translate reducer', () => {
   it('should change locale', () => {
     const action = {
       type: 'TRANSLATE_CHANGE_LOCALE',
-      payload: 'es'
+      payload: 'es',
     };
 
     expect(reducer(undefined, action).locale).toEqual('es');
@@ -26,12 +26,12 @@ describe('translate reducer', () => {
   it('should update messages', () => {
     const messages = fromJS({
       cs: { home: { title: 'Bar' } },
-      en: { home: { title: 'home', desciption: 'description' } }
+      en: { home: { title: 'home', desciption: 'description' } },
     });
 
     const action = {
       type: 'TRANSLATE_UPDATE_MESSAGES',
-      payload: messages
+      payload: messages,
     };
 
     expect(reducer(undefined, action).messages.toJS()).toEqual(messages.toJS());

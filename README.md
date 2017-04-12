@@ -238,6 +238,50 @@ const config = {
 </TranslateProvider>
 ```
 
+### How to locate translations on different pages
+
+You need to pass `pathname` or `history` object to `TranslateProvider`
+
+```javascript
+<TranslateProvider config={config} pathname="/some/path">
+  // ...
+</TranslateProvider>
+```
+
+```javascript
+import createHistory from 'history/createBrowserHistory';
+const history = createHistory();
+
+<TranslateProvider config={config} history={history}>
+  // ...
+</TranslateProvider>
+```
+
+### In App editor
+
+![Translation Editor](https://raw.githubusercontent.com/blueberryapps/ts-translate/master/editor_preview.png)
+
+Just add new wrapper `TranslateEditor` around your code. This Editor must be under `TranslateProvider` context
+
+```javascript
+import TranslateEditor from 'ts-translate/lib/editor';
+
+<TranslateProvider config={config} pathname="/some/path">
+  <TranslateEditor pathname="/some/path">
+    // ...
+  </TranslateEditor>
+</TranslateProvider>
+```
+
+same rule for `pathname` and `history` as for `TranslateProvider` applies for `TranslateEditor`.
+
+for disabling whole editor functionality (for example in production) set ENV variable `TRANSLATE_DISABLE_EDITOR=t`.
+When you are using webpack don't forget to add this to [DefinePlugin](https://webpack.js.org/plugins/define-plugin/)
+as `new webpack.DefinePlugin({ 'process.env.TRANSLATE_DISABLE_EDITOR': true })`.
+Also if you are using minifier the whole code gets removed by death code removal.
+So it is pretty easy to use this editor in development and stage,
+but it will not increase size in production build.
+
 ### On server side preload latest translations from TS
 
 ```javascript

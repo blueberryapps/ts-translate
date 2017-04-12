@@ -1,7 +1,7 @@
 import { createCnt, memoizeCreateCnt } from '../createCnt';
 
 const benchmark = (fn: (i: number) => void): number => {
-  const start = new Date;
+  const start = new Date();
   for (let i = 0; i < 20000 ; i ++) {
     fn(i);
   }
@@ -20,12 +20,12 @@ const memoizedFnSeq = (i: number) => memoizedCreateCntSeq(`en.foo.bar.${i}`, 're
 
 it('memoized version should be faster for same call', () => {
   expect(
-    benchmark(memoizedFn)
+    benchmark(memoizedFn),
   ).toBeLessThan(benchmark(normalFn) / fasterByX);
 });
 
 it('memoized version should be slower for different calls', () => {
   expect(
-    benchmark(memoizedFnSeq)
+    benchmark(memoizedFnSeq),
   ).toBeGreaterThan(benchmark(normalFnSeq));
 });

@@ -4,8 +4,12 @@ export interface AppState {
   translate: TranslatorOptions;
 }
 
+export type Dispatch = ({}: any) => void;
+
 export interface AppStore {
   getState: () => AppState;
+  dispatch: Dispatch;
+  subscribe: (listener: () => void) => (() => void);
 }
 
 export type TranslationResult = string | number | boolean | object | undefined;
