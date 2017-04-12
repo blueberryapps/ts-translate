@@ -10,6 +10,10 @@ export interface Msg {
   (key: string | string[], options?: MsgOptions | InterpolationDictionary | MsgOptions & InterpolationDictionary): TranslationResult;
 }
 
+export interface MsgClickHanlder {
+  (key: string | string[], element: React.Component<any, any>): void;
+}
+
 export interface Key {
   (key: string | string[], options?: MsgOptions | InterpolationDictionary | MsgOptions & InterpolationDictionary): string;
 }
@@ -44,6 +48,7 @@ export class Translator {
   fallbackLocale = '';
   store: AppStore | null = null;
   connector: Connector | undefined;
+  listeners: MsgClickHanlder[];
 
   constructor(options: TranslatorOptions | AppStore, connector?: Connector) {
     if (isAppStore(options)) {
@@ -54,6 +59,20 @@ export class Translator {
       this.fallbackLocale = options.fallbackLocale || this.fallbackLocale;
     }
     this.connector = connector;
+  }
+
+  onMsgClick: MsgClickHanlder = (key, element) => {
+    this.listeners.forEach(listener => listener(key, element));
+  }
+
+  subscribeMsgClick(listener: MsgClickHanlder): () => void {
+    this.listeners.push(listener);
+
+    const unsubscribe = () => {
+      this.listeners.splice(this.listeners.indexOf(listener), 1);
+    };
+
+    return unsubscribe;
   }
 
   // tslint:disable-next-line:typedef

@@ -98,9 +98,10 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
 
       // tslint:disable-next-line:typedef
       msg: CntFunc = (key, options = {}) => {
+        const { translator } = this.context;
         const { result, usedKey } = this.resolveMsg(key, options);
 
-        return createCnt(usedKey, result);
+        return createCnt(usedKey, result, translator.onMsgClick);
       }
 
       hasMsg: HasMsgFunc = (key, options = {}) => {
