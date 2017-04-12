@@ -12,7 +12,7 @@ export interface EditorProps {
 
 const StringEditor: React.StatelessComponent<EditorProps> = ({ value, onChange }) => (
   <textarea
-    style={[style, { minHeight: '70px', marginBottom: '5px' }]}
+    style={[style.input, { minHeight: '70px', marginBottom: '5px' }]}
     value={value || ''}
     onChange={onChange}
   />
@@ -21,7 +21,7 @@ const StringEditor: React.StatelessComponent<EditorProps> = ({ value, onChange }
 const NumberEditor: React.StatelessComponent<EditorProps> = ({ value, onChange }) => (
   <input
     type="number"
-    style={style}
+    style={style.input}
     value={value || ''}
     onChange={onChange}
   />
@@ -30,7 +30,7 @@ const NumberEditor: React.StatelessComponent<EditorProps> = ({ value, onChange }
 const BoolEditor: React.StatelessComponent<EditorProps> = ({ value: inputValue, onChange }) => (
   <input
     type="checkbox"
-    style={style}
+    style={style.input}
     value={inputValue || 'false'}
     onChange={({ target: { checked: value } }) => onChange({ target: { value } })}
   />
@@ -63,9 +63,9 @@ export class Translation extends React.PureComponent<TranslationProps, Translati
   };
 
   save = () => {
-    const { text, updateTranslation } = this.props;
+    const { keyPath, text, updateTranslation } = this.props;
 
-    updateTranslation(this.key().join('.'), text);
+    updateTranslation(this.key().join('.'), text, keyPath);
   }
 
   restore = () => {
@@ -90,7 +90,7 @@ export class Translation extends React.PureComponent<TranslationProps, Translati
     return (
       <div key="hovering" style={[styles.wrapper, changed && styles.changed]}>
         <strong key={this.key().join('.')} style={styles.key} onClick={() => (this.setState({ opened: !opened }))} >{keyPath}</strong>
-        {(opened || this.props.opened) && <EditorComponent value={text} onChange={onChange(keyPath, text)} style={style.input} />}
+        {(opened || this.props.opened) && <EditorComponent value={text} onChange={onChange(keyPath, text)} />}
         { Radium.getState(this.state, 'hovering', ':hover') &&
           <Style rules={{ [`.${classifyKey(this.key().join('.'))}`]: { background: 'red' } }} />}
         {changed && <button onClick={this.save} style={style.button} key={`${this.key()}Save`}>Save</button>}

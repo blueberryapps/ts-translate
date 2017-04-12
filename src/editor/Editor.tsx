@@ -92,7 +92,7 @@ export class Editor extends React.PureComponent<EditorProps, EditorState> {
       return null;
     }
 
-    const text = messages.getIn(`{data.get('key')}`.split('.'));
+    const text = messages.getIn(`${data.get('key')}`.split('.'));
 
     if (Map.isMap(text)) {
       return <div key={`${data.get('key')}`} />;
