@@ -1,6 +1,6 @@
 {
   "name": "ts-translate",
-  "version": "2.2.15",
+  "version": "2.2.16",
   "main": "lib/index.js",
   "typings": "lib/index",
   "repository": "git@github.com:blueberryapps/ts-translate.git",
@@ -62,7 +62,7 @@
     "url": ">=0.9.0"
   },
   "optionalDependencies": {
-    "isomorphic-fetch": ">=2.0.0",
+    "isomorphic-fetch": "^2.2.1",
     "radium": ">=0.16.0",
     "react": ">=13.0.0",
     "react-redux": ">=4.0.0"

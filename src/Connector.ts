@@ -6,7 +6,7 @@ import { ApiConfig, Locale, Messages, TranslationResult } from './types';
 
 let changesEventSource: any = null;
 
-export interface StoredTranslation {
+export interface StoredTranslation extends Map<string, string | TranslationResult> {
   data_type: string;
   key: string;
   text: TranslationResult;

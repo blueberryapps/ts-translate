@@ -3,6 +3,7 @@
     "rules": {
         "jsx-no-lambda": false, // TODO disable for now
         "jsx-no-multiline-js": false, // TODO disable for now
+        "jsx-wrap-multiline": false,
         "align": [
             true,
             "statements"
@@ -61,7 +62,7 @@
         "no-trailing-whitespace": true,
         "no-unused-expression": true,
         "no-unused-variable": false,
-        "no-use-before-declare": true,
+        "no-use-before-declare": false,
         "no-var-requires": false,
         "object-literal-key-quotes": [true, "as-needed"],
         "object-literal-sort-keys": false, // Just for now
