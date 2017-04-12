@@ -36,7 +36,8 @@ function convertDotPath(path: string, value: TranslationResult): any {
 }
 
 export interface TranslationEditorProps {
-  history: any;
+  history?: any;
+  pathname?: string;
 }
 
 export interface TranslationEditorContext {
@@ -51,16 +52,16 @@ export interface User {
 }
 
 export interface TranslationEditorState {
-    error?: string;
-    opened: boolean;
-    search: string;
-    historyUnsubscribe?: () => void;
-    messages: Messages;
-    pathname: string;
-    user: User;
-    translationStore: StoredTranslations;
-    translatorSubscription: () => void;
-    unsubscribeStore: () => void;
+  error?: string;
+  opened: boolean;
+  search: string;
+  historyUnsubscribe?: () => void;
+  messages: Messages;
+  pathname: string;
+  user: User;
+  translationStore: StoredTranslations;
+  translatorSubscription: () => void;
+  unsubscribeStore: () => void;
 }
 
 export class TranslationEditor extends React.PureComponent<TranslationEditorProps, TranslationEditorState> {
@@ -87,7 +88,8 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
 
   componentWillMount() {
     const { store, translator } = this.context;
-    const historyUnsubscribe = this.props.history.listen(this.updateState);
+
+    const historyUnsubscribe = this.props.history ? this.props.history.listen(this.updateState) : undefined;
 
     if (!store) {
       return;
@@ -101,6 +103,12 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
 
     this.updateState();
     this.loginOnMount();
+  }
+
+  componentWillReceiveProps(next: TranslationEditorProps) {
+    if (next.pathname !== this.props.pathname) {
+      this.updateState(next.pathname);
+    }
   }
 
   componentWillUnmount() {
@@ -155,13 +163,13 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     }).then((d: Response) => d.json()).catch((error: Error) => this.setError(JSON.stringify(error)));
   }
 
-  updateState = () => {
+  updateState = (newPathname?: string) => {
     this.setState({
       messages: this.context.store.getState().translate.messages,
     });
 
     setTimeout(() => {
-      const pathname = window.location.pathname;
+      const pathname = newPathname || window.location.pathname;
       const pathChanged = (this.state.pathname !== pathname);
       const search = pathChanged ? '' : this.state.search;
       const error = pathChanged ? '' : this.state.error;

@@ -6,12 +6,21 @@ import { ApiConfig } from './types';
 export interface ProviderProps {
   config?: ApiConfig;
   pathname?: string;
+  history?: any;
 }
 
-export class Provider extends React.Component<ProviderProps, void> { // eslint-disable-line react/no-multi-comp
+export interface ProviderState {
+  historyUnsubscribe?: () => void;
+}
+
+export class Provider extends React.Component<ProviderProps, ProviderState> { // eslint-disable-line react/no-multi-comp
   static defaultProps = {
     config: {},
     pathname: typeof window !== 'undefined' ? `${window.location.pathname}` : '/',
+  };
+
+  state = {
+    historyUnsubscribe: undefined,
   };
 
   connector?: Connector = undefined;
@@ -24,6 +33,18 @@ export class Provider extends React.Component<ProviderProps, void> { // eslint-d
   static childContextTypes = {
     translator: () => {},
   };
+
+  componentWillMount() {
+    this.setState({
+      historyUnsubscribe: this.props.history ? this.props.history.listen(this.updateLocation) : undefined,
+    });
+  }
+
+  updateLocation = () => {
+    if (this.connector) {
+      this.connector.updateLocation(window.location.pathname);
+    }
+  }
 
   componentWillUpdate(nextProps: ProviderProps) {
     if (nextProps.pathname && this.connector && nextProps.pathname !== this.props.pathname) {
