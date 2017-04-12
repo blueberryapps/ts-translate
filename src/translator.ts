@@ -48,7 +48,7 @@ export class Translator {
   fallbackLocale = '';
   store: AppStore | null = null;
   connector: Connector | undefined;
-  listeners: MsgClickHanlder[];
+  listeners: MsgClickHanlder[] = [];
 
   constructor(options: TranslatorOptions | AppStore, connector?: Connector) {
     if (isAppStore(options)) {
