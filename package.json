@@ -1,6 +1,6 @@
 {
   "name": "ts-translate",
-  "version": "2.2.19",
+  "version": "2.2.24",
   "main": "lib/index.js",
   "typings": "lib/index",
   "repository": "git@github.com:blueberryapps/ts-translate.git",

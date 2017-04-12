@@ -17,7 +17,7 @@ export class SignOut extends React.PureComponent<SignOutProps, void> {
 
   render() {
     return (
-      <button onClick={this.logout} style={style}>Logout</button>
+      <button onClick={this.logout} style={style.button}>Logout</button>
     );
   }
 }

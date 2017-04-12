@@ -11,6 +11,7 @@ import { AppStore, Messages, TranslationResult} from '../types';
 import Editor from './Editor';
 import Opener from './Opener';
 import Panel from './Panel';
+import Search from './Search';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
 import User from './User';
@@ -73,7 +74,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
 
   state = {
     error: undefined,
-    opened: true,
+    opened: false,
     search: '',
     historyUnsubscribe: undefined,
     messages: Map() as Messages,
@@ -225,13 +226,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
                 <User {...user} />
                 <SignOut apiCall={this.apiCall} setUser={this.setUser} />
               </div>
-              <input
-                type="text"
-                onChange={({ target: { value } }) => this.setState({ search: value })}
-                style={style.input}
-                placeholder="Search..."
-                value={search}
-              />
+              <Search search={search} onChange={(search) => this.setState({ search })} />
               <Editor
                 dispatch={dispatch}
                 messages={getState().translate.messages}
@@ -316,17 +311,17 @@ export const style = {
   panel: {
     background: 'white',
     position: 'fixed',
-    right: 0,
+    right: -PANEL_WIDTH,
     top: 0,
     bottom: 0,
     zIndex: 11,
     overflow: 'auto',
-    width: 0,
+    width: PANEL_WIDTH,
     transition: 'all .2s',
   },
   panelOpened: {
-    width: PANEL_WIDTH,
     borderLeft: '3px solid #111111',
+    right: 0,
     padding: '15px',
   },
   navigation: {

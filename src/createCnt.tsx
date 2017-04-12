@@ -31,6 +31,7 @@ export const createCnt: CreateCnt = (key, result, onClick) => {
 
       return (
         <span
+          data-key={key}
           onClick={this.onClick}
           className={`cnt ${classifyKey(usedKey)}`}
           dangerouslySetInnerHTML={{ __html: `${content}` }}
@@ -39,7 +40,13 @@ export const createCnt: CreateCnt = (key, result, onClick) => {
     }
   }
 
-  const cntInstace = <Cnt key={key} content={result} usedKey={key} />;
+  const cntInstace = (
+    <Cnt
+      key={key}
+      content={result}
+      usedKey={key}
+    />
+  );
 
   return {
     ...cntInstace,
