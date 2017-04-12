@@ -11,18 +11,18 @@ export interface ProviderProps {
 export class Provider extends React.Component<ProviderProps, void> { // eslint-disable-line react/no-multi-comp
   static defaultProps = {
     config: {},
-    pathname: typeof window !== 'undefined' ? `${window.location.pathname}` : '/'
+    pathname: typeof window !== 'undefined' ? `${window.location.pathname}` : '/',
   };
 
   connector?: Connector = undefined;
   translator?: Translator = undefined;
 
   static contextTypes = {
-    store: React.PropTypes.object
+    store: React.PropTypes.object,
   };
 
   static childContextTypes = {
-    translator: () => {}
+    translator: () => {},
   };
 
   componentWillUpdate(nextProps: ProviderProps) {
@@ -46,7 +46,7 @@ export class Provider extends React.Component<ProviderProps, void> { // eslint-d
     }
 
     return {
-      translator: this.translator
+      translator: this.translator,
     };
   }
 

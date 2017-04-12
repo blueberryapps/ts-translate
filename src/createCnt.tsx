@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { Map } from 'immutable';
+import * as React from 'react';
+import { classifyKey } from './classifyKey';
 import { MsgClickHanlder } from './translator';
 import { TranslationResult } from './types';
-import { classifyKey } from './classifyKey';
 
 export interface CntProps {
   content: TranslationResult;
@@ -17,7 +17,9 @@ export const createCnt: CreateCnt = (key, result, onClick) => {
   class Cnt extends React.Component<CntProps, void> {
 
     onClick = (): void => {
-      if (onClick) onClick(key, this);
+      if (onClick) {
+        onClick(key, this);
+      }
     }
 
     render() {
@@ -41,14 +43,16 @@ export const createCnt: CreateCnt = (key, result, onClick) => {
 
   return {
     ...cntInstace,
-    toString: () => result
+    toString: () => result,
   } as JSX.Element;
 };
 
 export const memoizeCreateCnt = (fn: CreateCnt) => {
   let memoizeCache = Map<string, Map<TranslationResult, JSX.Element>>();
   return (key: string, result: TranslationResult, onClick?: MsgClickHanlder): JSX.Element => {
-    if (memoizeCache.hasIn([key, result])) return memoizeCache.getIn([key, result]);
+    if (memoizeCache.hasIn([key, result])) {
+      return memoizeCache.getIn([key, result]);
+    }
 
     const newResult = fn(key, result, onClick);
     memoizeCache = memoizeCache.setIn([key, result], newResult);

@@ -1,8 +1,8 @@
-import apiCall, { apiUrlResolve } from './api';
-import { fetchTranslations, updateMessages } from './actions';
 import { Map } from 'immutable';
 import { Dispatch } from 'redux';
-import { ApiConfig, Locale, TranslationResult, Messages } from './types';
+import { fetchTranslations, updateMessages } from './actions';
+import apiCall, { apiUrlResolve } from './api';
+import { ApiConfig, Locale, Messages, TranslationResult } from './types';
 
 let changesEventSource: any = null;
 
@@ -43,48 +43,53 @@ export default class Connector {
   rememberUsedTranslation(locale: Locale, path: string | string[], message: TranslationResult | Messages) {
     this.locale = locale;
 
-    if (!this.config.sync)
+    if (!this.config.sync) {
       return;
+    }
 
-    if (this.__dataType(message) === 'array')
+    if (this.__dataType(message) === 'array') {
       ((message || {}) as Messages).map((v: TranslationResult, k: string) => this.rememberUsedTranslation(locale, ([] as string[]).concat(path, [k]), v));
-    else
+    } else {
       this.__rememberTranslation([locale].concat(path), message);
+    }
 
     this.__enqueeSendTranslations();
   }
 
   sendTranslations() {
-    if (!this.config.sync || !this.config.apiUrl || !this.config.apiToken)
+    if (!this.config.sync || !this.config.apiUrl || !this.config.apiToken) {
       return;
+    }
 
-    if (this.translationStore === this.previousTranslationsSend)
+    if (this.translationStore === this.previousTranslationsSend) {
       return;
+    }
 
     this.translationStore.reduce(
       (output: Map<string, TranslationResult>, translations: StoredTranslations, location: string) => (
         output.set(
           location,
-          translations.filter((_: any, key: string) => !this.previousTranslationsSend.getIn([location, key]))
+          translations.filter((_: any, key: string) => !this.previousTranslationsSend.getIn([location, key])),
         )
       ),
-      Map()
+      Map(),
     )
     .filter((translations: StoredTranslations) => !translations.isEmpty())
     .map((translations: StoredTranslations, location: string) =>
       this.api(this.config, 'POST', 'api/v1/translations', {
         location,
         locale:       this.locale,
-        translations: translations.toIndexedSeq().toJS()
-      })
+        translations: translations.toIndexedSeq().toJS(),
+      }),
     );
 
     this.previousTranslationsSend = this.translationStore;
   }
 
   __enqueeSendTranslations() {
-    if (!this.config.sync)
+    if (!this.config.sync) {
       return;
+    }
 
     if (this.sendTimeout) {
       clearTimeout(this.sendTimeout);
@@ -102,8 +107,8 @@ export default class Connector {
       {
         data_type: this.__dataType(message),
         key:       path,
-        text:      message
-      }
+        text:      message,
+      },
     );
   }
 
@@ -124,7 +129,9 @@ export default class Connector {
   }
 
   __dataType(value: any) {
-    if (!value && `${value}`.length === 0) return null;
+    if (!value && `${value}`.length === 0) {
+      return null;
+    }
 
     switch (typeof value) {
       case 'boolean': return 'bool';

@@ -3,20 +3,20 @@ const formats = {
     date: {
       default: {
         format: 'D.M.YYYY',
-      }
+      },
     },
     number: {
       default: {
-        precision: 10
+        precision: 10,
       },
       currency: {
-        unit: '$'
+        unit: '$',
       },
       percentage: {
-        template: '%n %'
-      }
-    }
-  }
+        template: '%n %',
+      },
+    },
+  },
 };
 
 export default formats;

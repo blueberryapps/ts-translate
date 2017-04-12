@@ -5,7 +5,7 @@ describe('Connector', () => {
   const config = {
     sync: true,
     apiUrl: 'http://translations.blueberry.io',
-    apiToken: 'XYZ'
+    apiToken: 'XYZ',
   };
 
   const dispatch = () => {};
@@ -77,9 +77,9 @@ describe('Connector', () => {
           location: '/foo-bar',
           translations: [
             { data_type: 'string', key: 'cs.foo', text: 'Bar' },
-            { data_type: 'string', key: 'en.bar', text: 'Foo' }
-          ]
-        }
+            { data_type: 'string', key: 'en.bar', text: 'Foo' },
+          ],
+        },
       ]);
 
       expect(Connector.translationStore.toJS()).toEqual(Connector.previousTranslationsSend.toJS());
@@ -99,8 +99,8 @@ describe('Connector', () => {
           location: '/foo-bar',
           translations: [
             { data_type: 'string', key: 'cs.foo.bar', text: 'Foo-Bar' },
-          ]
-        }
+          ],
+        },
       ]);
 
       expect(stub.mock.calls[2]).toEqual([
@@ -112,8 +112,8 @@ describe('Connector', () => {
           location: '/bar',
           translations: [
             { data_type: 'string', key: 'en.foobar', text: 'Foo Bar' },
-          ]
-        }
+          ],
+        },
       ]);
       expect(Connector.translationStore).toEqual(Connector.previousTranslationsSend);
     });
@@ -149,14 +149,14 @@ describe('Connector', () => {
           'cs.foo': {
             data_type: 'string',
             key: 'cs.foo',
-            text: 'Bar'
+            text: 'Bar',
           },
           'en.bar': {
             data_type: 'string',
             key: 'en.bar',
-            text: 'Foo'
-          }
-        }
+            text: 'Foo',
+          },
+        },
       });
     });
 
@@ -169,14 +169,14 @@ describe('Connector', () => {
           'cs.foo.fo': {
             data_type: 'string',
             key: 'cs.foo.fo',
-            text: 'Bar'
+            text: 'Bar',
           },
           'cs.foo.bar.fo': {
             data_type: 'string',
             key: 'cs.foo.bar.fo',
-            text: 'foBar'
+            text: 'foBar',
           },
-        }
+        },
       });
     });
   });

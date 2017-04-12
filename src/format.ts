@@ -50,7 +50,9 @@ export function formatNumber(input: number, givenOptions: FormatOptions = {}) {
   const rounedNumber = roundNumber(input, options);
   const formattedNumber = formatNumberSeparatorAndDelimiter(rounedNumber, options);
 
-  if (formattedNumber === 'NaN') return '';
+  if (formattedNumber === 'NaN') {
+    return '';
+  }
 
   return options.template
     .replace('%n', formattedNumber)

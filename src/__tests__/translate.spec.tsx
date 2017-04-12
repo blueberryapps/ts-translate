@@ -1,22 +1,23 @@
-/* eslint-disable react/no-multi-comp */
-import { translate, TranslateProps } from '../translate';
-import * as TestUtils from 'react-addons-test-utils';
-import TranslateProvider from '../Provider';
-import * as React from 'react';
-import reducer from '../reducer';
-import { changeLocale, updateMessages } from '../actions';
-import { createStore, combineReducers, Action } from 'redux';
-import { Provider as ReduxProvider } from 'react-redux';
-import { TranslatorOptions } from '../types';
+/* tslint:disable max-classes-per-file */
+
 import { fromJS  } from 'immutable';
+import * as React from 'react';
+import * as TestUtils from 'react-addons-test-utils';
+import { Provider as ReduxProvider } from 'react-redux';
+import { Action, combineReducers, createStore } from 'redux';
+import { changeLocale, updateMessages } from '../actions';
+import TranslateProvider from '../Provider';
+import reducer from '../reducer';
+import { translate, TranslateProps } from '../translate';
+import { TranslatorOptions } from '../types';
 
 const initial: TranslatorOptions = {
   messages: fromJS({
     cs: { home: { description: 'Foo', fallback: 'Fallback' } },
-    en: { home: { header: { title: 'FooBar' }, description: 'enFoo', about: 'Bar' } }
+    en: { home: { header: { title: 'FooBar' }, description: 'enFoo', about: 'Bar' } },
   }),
   locale: 'cs',
-  fallbackLocale: 'en'
+  fallbackLocale: 'en',
 };
 
 interface State {
@@ -49,7 +50,7 @@ describe('Translate Decorator', () => {
         <TranslateProvider >
           <DecoratedContainer />
         </TranslateProvider>
-      </ReduxProvider>
+      </ReduxProvider>,
     ) as  React.Component<{}, {}>;
 
     return TestUtils.findRenderedComponentWithType(container, Passthrough);
@@ -95,7 +96,7 @@ describe('Translate Decorator', () => {
           <TranslateProvider >
             <DecoratedContainer />
           </TranslateProvider>
-        </ReduxProvider>
+        </ReduxProvider>,
       ) as  React.Component<{}, {}>;
 
       const instance = TestUtils.findRenderedComponentWithType(container, DecoratedContainer as React.ClassType<any, any, any>);

@@ -13,10 +13,10 @@ const messages = fromJS({
       'Homepage headline': 'Super headline under scope',
     },
     deep: {
-      'scopedTransInterpolation': '%{foo} (again)',
+      scopedTransInterpolation: '%{foo} (again)',
       scope: {
         'Homepage headline': 'Super headline under deep scope',
-      }
+      },
     },
     formats: {
       date: {
@@ -24,27 +24,27 @@ const messages = fromJS({
           format: 'D.M.YYYY',
         },
         short: {
-          format: 'D.M.YYYY'
+          format: 'D.M.YYYY',
         },
         long: {
-          format: 'H:m:s D.M.YYYY'
-        }
+          format: 'H:m:s D.M.YYYY',
+        },
       },
       number: {
         default: {
-          precision: 10
+          precision: 10,
         },
         currency: {
-          unit: '$'
+          unit: '$',
         },
         percentage: {
-          template: '%n %'
-        }
-      }
-    }
+          template: '%n %',
+        },
+      },
+    },
   },
   es: {
-    'Homepage headline': 'Super titular'
+    'Homepage headline': 'Super titular',
   },
 }) as Messages;
 
@@ -227,16 +227,16 @@ describe('connector to translation server', () => {
       {
         sync: true,
         apiUrl: 'http://translations.blueberry.io',
-        apiToken: 'XYZ'
+        apiToken: 'XYZ',
       },
-      dispatch
+      dispatch,
     );
     const translator = new Translator({ messages, locale, ...overrides }, connector);
 
     return {
       dispatch,
       connector,
-      translator
+      translator,
     };
   };
 
@@ -246,11 +246,11 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'en.Something nice': {
-          'data_type': 'string',
-          'key': 'en.Something nice',
-          'text': 'Something nice'
-        }
-      }
+          data_type: 'string',
+          key: 'en.Something nice',
+          text: 'Something nice',
+        },
+      },
     });
   });
 
@@ -266,11 +266,11 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'en.Homepage headline': {
-          'data_type': 'string',
-          'key': 'en.Homepage headline',
-          'text': 'Super headline'
-        }
-      }
+          data_type: 'string',
+          key: 'en.Homepage headline',
+          text: 'Super headline',
+        },
+      },
     });
   });
 
@@ -280,11 +280,11 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'en.Not translated yet %{status}': {
-          'data_type': 'string',
-          'key': 'en.Not translated yet %{status}',
-          'text': 'Not translated yet %{status}'
-        }
-      }
+          data_type: 'string',
+          key: 'en.Not translated yet %{status}',
+          text: 'Not translated yet %{status}',
+        },
+      },
     });
   });
 
@@ -294,11 +294,11 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'en.homepage.Homepage headline': {
-          'data_type': 'string',
-          'key': 'en.homepage.Homepage headline',
-          'text': 'Super headline under scope'
-        }
-      }
+          data_type: 'string',
+          key: 'en.homepage.Homepage headline',
+          text: 'Super headline under scope',
+        },
+      },
     });
   });
 
@@ -308,16 +308,16 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'en.deep.scopedTransInterpolation': {
-          'data_type': 'string',
-          'key': 'en.deep.scopedTransInterpolation',
-          'text': '%{foo} (again)'
+          data_type: 'string',
+          key: 'en.deep.scopedTransInterpolation',
+          text: '%{foo} (again)',
         },
         'en.deep.scope.Homepage headline': {
-          'data_type': 'string',
-          'key': 'en.deep.scope.Homepage headline',
-          'text': 'Super headline under deep scope'
-        }
-      }
+          data_type: 'string',
+          key: 'en.deep.scope.Homepage headline',
+          text: 'Super headline under deep scope',
+        },
+      },
     });
   });
 
@@ -327,11 +327,11 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'en.formats.number.default.precision': {
-          'data_type': 'float',
-          'key': 'en.formats.number.default.precision',
-          'text': 10
-        }
-      }
+          data_type: 'float',
+          key: 'en.formats.number.default.precision',
+          text: 10,
+        },
+      },
     });
   });
 
@@ -342,16 +342,16 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'en.deep.scope.Homepage headline': {
-          'data_type': 'string',
-          'key': 'en.deep.scope.Homepage headline',
-          'text': 'Super headline under deep scope'
+          data_type: 'string',
+          key: 'en.deep.scope.Homepage headline',
+          text: 'Super headline under deep scope',
         },
         'en.homepage.Homepage headline': {
-          'data_type': 'string',
-          'key': 'en.homepage.Homepage headline',
-          'text': 'Super headline under scope'
-        }
-      }
+          data_type: 'string',
+          key: 'en.homepage.Homepage headline',
+          text: 'Super headline under scope',
+        },
+      },
     });
   });
 
@@ -361,11 +361,11 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'es.homepage.Homepage headline': {
-          'data_type': 'string',
-          'key': 'es.homepage.Homepage headline',
-          'text': 'Super headline under scope'
-        }
-      }
+          data_type: 'string',
+          key: 'es.homepage.Homepage headline',
+          text: 'Super headline under scope',
+        },
+      },
     });
   });
 
@@ -375,11 +375,11 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'es.Not translated': {
-          'data_type': 'string',
-          'key': 'es.Not translated',
-          'text': 'Not translated'
-        }
-      }
+          data_type: 'string',
+          key: 'es.Not translated',
+          text: 'Not translated',
+        },
+      },
     });
   });
 
@@ -389,11 +389,11 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'en.deep.scope.unknown': {
-          'data_type': 'string',
-          'key': 'en.deep.scope.unknown',
-          'text': 'deep.scope.unknown'
-        }
-      }
+          data_type: 'string',
+          key: 'en.deep.scope.unknown',
+          text: 'deep.scope.unknown',
+        },
+      },
     });
   });
 
@@ -403,11 +403,11 @@ describe('connector to translation server', () => {
     expect(connector.translationStore.toJS()).toEqual({
       '/': {
         'en.deep.scope.unknown': {
-          'data_type': 'string',
-          'key': 'en.deep.scope.unknown',
-          'text': 'scope.unknown'
-        }
-      }
+          data_type: 'string',
+          key: 'en.deep.scope.unknown',
+          text: 'scope.unknown',
+        },
+      },
     });
   });
 });

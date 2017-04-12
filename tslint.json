@@ -1,9 +1,10 @@
 {
+    "extends": ["tslint:recommended", "tslint-react", "tslint-eslint-rules"],
     "rules": {
+        "jsx-no-lambda": false, // TODO disable for now
+        "jsx-no-multiline-js": false, // TODO disable for now
         "align": [
             true,
-            "parameters",
-            "arguments",
             "statements"
         ],
         "ban": false,
@@ -12,50 +13,87 @@
             true,
             "check-space"
         ],
-        "eofline": false,
+        "curly": true,
+        "eofline": true,
         "forin": true,
-        "indent": [ true, "spaces" ],
+        "indent": [
+            true,
+            "spaces"
+        ],
         "interface-name": [true, "never-prefix"],
         "jsdoc-format": true,
         "label-position": true,
+        "max-line-length": false,
+        "member-access": false,
         "member-ordering": [
             true,
             "public-before-private",
+            // "static-before-instance", // Disable for now
             "variables-before-functions"
         ],
         "no-any": false,
         "no-arg": true,
-        "no-bitwise": true,
-        "no-consecutive-blank-lines": [true],
+        "no-bitwise": false,
+        "no-conditional-assignment": false,
+        "no-consecutive-blank-lines": true,
+        "no-console": [
+            true,
+            "debug",
+            "info",
+            "time",
+            "timeEnd",
+            "trace"
+        ],
+        "no-var-keyword": true,
         "no-construct": true,
+        "no-parameter-properties": false,
         "no-debugger": true,
         "no-duplicate-variable": true,
         "no-empty": false,
         "no-eval": true,
-        "no-shadowed-variable": true,
+        "no-inferrable-types": [true],
+        "no-internal-module": true,
+        "no-null-keyword": false,
+        "no-require-imports": false,
+        "no-shadowed-variable": false,
         "no-string-literal": true,
-        "no-switch-case-fall-through": true,
-        "no-trailing-whitespace": false,
+        "no-switch-case-fall-through": false,
+        "no-trailing-whitespace": true,
         "no-unused-expression": true,
+        "no-unused-variable": false,
         "no-use-before-declare": true,
+        "no-var-requires": false,
+        "object-literal-key-quotes": [true, "as-needed"],
+        "object-literal-sort-keys": false, // Just for now
         "one-line": [
             true,
+            "check-open-brace",
             "check-catch",
             "check-else",
-            "check-open-brace",
             "check-whitespace"
         ],
-        "quotemark": [true, "single", "jsx-double"],
-        "radix": true,
-        "semicolon": [true, "always"],
-        "switch-default": true,
-
-        "trailing-comma": [true, "always"],
-
-        "triple-equals": [ true, "allow-null-check" ],
-        "typedef": [
+        "quotemark": [
             true,
-            "parameter",
+            "single",
+            "jsx-double"
+        ],
+        "radix": true,
+        "semicolon": [true],
+        "switch-default": true,
+        "trailing-comma": [
+            true,
+            {
+                "multiline": "always",
+                "singleline": "never"
+            }
+        ],
+        "triple-equals": [
+            true,
+            "allow-null-check"
+        ],
+        "typedef": [
+            false, // TODO: just for now
+            "call-signature",
             "property-declaration"
         ],
         "typedef-whitespace": [
@@ -68,16 +106,14 @@
                 "variable-declaration": "nospace"
             }
         ],
-        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
+        "variable-name": false,
         "whitespace": [
             true,
             "check-branch",
             "check-decl",
-            "check-module",
             "check-operator",
             "check-separator",
-            "check-type",
-            "check-typecast"
+            "check-type"
         ]
     }
 }
