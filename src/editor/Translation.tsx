@@ -2,7 +2,7 @@ import * as Radium from 'radium';
 import { Style } from 'radium';
 import * as React from 'react';
 import { classifyKey } from '../classifyKey';
-import { PendingChanges } from './Editor';
+import { PendingChanges } from './types';
 import { style, UpdateTranslation } from './TranslationEditor';
 
 export interface EditorProps {

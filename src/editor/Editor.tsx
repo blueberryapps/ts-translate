@@ -2,30 +2,14 @@ import { Map } from 'immutable';
 import *  as Radium from 'radium';
 import * as React from 'react';
 import { updateMessages } from '../actions';
-import { StoredTranslation, StoredTranslations }from '../Connector';
-import { Dispatch, Messages } from '../types';
+import { StoredTranslation }from '../Connector';
 import Translation from './Translation';
-import { UpdateTranslation } from './TranslationEditor';
+import { EditorProps, EditorState, SortedKeys } from './types';
 
 function convertDotPath(path: string, value: string) {
   const [last, ...paths] = path.split('.').reverse();
   return paths.reduce((acc, el) => ({ [el]: acc }), { [last]: value } as any);
 }
-export type SortedKeys = Map<string, StoredTranslation>;
-export type PendingChanges = Map<string, string>;
-
-export interface EditorProps {
-  dispatch: Dispatch;
-  messages: Messages;
-  pathname: string;
-  search: string;
-  translationStore: StoredTranslations;
-  updateTranslation: UpdateTranslation;
-}
-export interface EditorState {
-  pendingChanges: PendingChanges;
-  sortedKeys: SortedKeys;
-};
 
 export class Editor extends React.PureComponent<EditorProps, EditorState> {
 

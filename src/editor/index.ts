@@ -1,5 +1,5 @@
-if (process.env.TRANSLATE_DISABLE_EDITOR) {
-  module.exports = require('./EmptyWrapper');
-} else {
-  module.exports = require('./TranslationEditor');
-}
+import { EditorProps, EditorState } from './types';
+
+export const Editor = ((process.env.TRANSLATE_DISABLE_EDITOR) ? require('./EmptyWrapper') : require('./TranslationEditor')) as React.PureComponent<EditorProps, EditorState>;
+
+export default Editor;
