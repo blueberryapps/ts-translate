@@ -7,7 +7,7 @@ import { AppStore, InterpolationDictionary, Messages, MsgOptions, TranslationRes
 const INTERPOLATION_REGEXP = /%{([\w0-9]+)}/g;
 
 export interface Msg {
-  (key: string | string[], options?: MsgOptions | InterpolationDictionary | MsgOptions & InterpolationDictionary): TranslationResult;
+  (key: string | string[], options?: MsgOptions): TranslationResult;
 }
 
 export interface MsgClickHanlder {
@@ -15,7 +15,7 @@ export interface MsgClickHanlder {
 }
 
 export interface Key {
-  (key: string | string[], options?: MsgOptions | InterpolationDictionary | MsgOptions & InterpolationDictionary): string;
+  (key: string | string[], options?: MsgOptions): string;
 }
 
 export interface ResolveResult {
@@ -24,7 +24,7 @@ export interface ResolveResult {
 }
 
 export interface Resolve {
-  (key: string | string[], options?: MsgOptions | InterpolationDictionary | MsgOptions & InterpolationDictionary): ResolveResult;
+  (key: string | string[], options?: MsgOptions): ResolveResult;
 }
 
 export interface FormatDate {

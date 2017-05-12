@@ -2,8 +2,8 @@ import * as Radium from 'radium';
 import { Style } from 'radium';
 import * as React from 'react';
 import { classifyKey } from '../classifyKey';
-import { PendingChanges } from './Editor';
 import { style, UpdateTranslation } from './TranslationEditor';
+import { PendingChanges } from './types';
 
 export interface EditorProps {
   value: string | number;
@@ -44,7 +44,7 @@ const mapping = {
 
 export interface TranslationProps {
   opened: boolean;
-  onChange: (keyPath: string, text: string) => (x: { target: { value?: string | number, keyPath: string }}) => void;
+  onChange: (keyPath: string, text: string) => (x: { target: { value?: string | number, keyPath: string } }) => void;
   dataType?: string | number;
   keyPath: string;
   pendingChanges: PendingChanges;
@@ -89,9 +89,9 @@ export class Translation extends React.PureComponent<TranslationProps, Translati
 
     return (
       <div key="hovering" style={[styles.wrapper, changed && styles.changed]}>
-        <strong key={this.key().join('.')} style={styles.key} onClick={() => (this.setState({ opened: !opened }))} >{keyPath}</strong>
+        <strong key={this.key().join('.')} style={styles.key} onClick={() => (this.setState({ opened: !opened }))} >{this.key().join('.')}</strong>
         {(opened || this.props.opened) && <EditorComponent value={text} onChange={onChange(keyPath, text)} />}
-        { Radium.getState(this.state, 'hovering', ':hover') &&
+        {Radium.getState(this.state, 'hovering', ':hover') &&
           <Style rules={{ [`.${classifyKey(this.key().join('.'))}`]: { background: 'red' } }} />}
         {changed && <button onClick={this.save} style={style.button} key={`${this.key()}Save`}>Save</button>}
         {changed && <button onClick={this.restore} style={[style.button, styles.buttonSecondary]} key={`${this.key()}Restore`}>Restore</button>}

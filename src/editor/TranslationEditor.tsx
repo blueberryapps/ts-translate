@@ -56,6 +56,7 @@ export interface TranslationEditorState {
   opened: boolean;
   search: string;
   historyUnsubscribe?: () => void;
+  locale: string;
   messages: Messages;
   pathname: string;
   user: User;
@@ -80,6 +81,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     historyUnsubscribe: undefined,
     messages: Map() as Messages,
     pathname: '/',
+    locale: 'en',
     user: { username: undefined },
     translationStore: Map<string, Map<string, StoredTranslation>>(),
     translatorSubscription: () => {},
@@ -156,7 +158,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     return fetch(url, {
       method,
       body: method === 'get' ? null : JSON.stringify(data),
-      credentials: 'same-origin',
+      credentials: 'include',
       headers: {
         'Content-type': 'application/json',
       },
@@ -176,6 +178,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
 
       this.setState({
         translationStore: this.context.translator.connector && this.context.translator.connector.translationStore,
+        locale: this.context.translator.__locale(),
         pathname,
         search,
         error,
@@ -208,7 +211,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
   }
 
   render() {
-    const { translationStore, opened, pathname, search, user, error } = this.state;
+    const { translationStore, opened, locale, pathname, search, user, error } = this.state;
     const { children } = this.props;
     const { store: { getState, dispatch } } = this.context;
 
@@ -238,6 +241,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
               <Editor
                 dispatch={dispatch}
                 messages={getState().translate.messages}
+                locale={locale}
                 pathname={pathname}
                 search={search}
                 translationStore={translationStore}
