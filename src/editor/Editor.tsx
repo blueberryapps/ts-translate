@@ -2,30 +2,16 @@ import { Map } from 'immutable';
 import *  as Radium from 'radium';
 import * as React from 'react';
 import { updateMessages } from '../actions';
-import { StoredTranslation, StoredTranslations }from '../Connector';
-import { Dispatch, Messages } from '../types';
+import { StoredTranslation }from '../Connector';
 import Translation from './Translation';
-import { UpdateTranslation } from './TranslationEditor';
+import { EditorProps, EditorState, SortedKeys } from './types';
 
 function convertDotPath(path: string, value: string) {
   const [last, ...paths] = path.split('.').reverse();
   return paths.reduce((acc, el) => ({ [el]: acc }), { [last]: value } as any);
 }
-export type SortedKeys = Map<string, StoredTranslation>;
-export type PendingChanges = Map<string, string>;
 
-export interface EditorProps {
-  dispatch: Dispatch;
-  messages: Messages;
-  pathname: string;
-  search: string;
-  translationStore: StoredTranslations;
-  updateTranslation: UpdateTranslation;
-}
-export interface EditorState {
-  pendingChanges: PendingChanges;
-  sortedKeys: SortedKeys;
-};
+const emptyMap = Map();
 
 export class Editor extends React.PureComponent<EditorProps, EditorState> {
 
@@ -37,7 +23,7 @@ export class Editor extends React.PureComponent<EditorProps, EditorState> {
   componentWillReceiveProps(next: EditorProps) {
     const { translationStore, pathname, search } = this.props;
 
-    const anyNewTranslation = translationStore.get(pathname).keySeq().hashCode() !== next.translationStore.get(pathname).keySeq().hashCode();
+    const anyNewTranslation = (translationStore.get(pathname) || emptyMap).keySeq().hashCode() !== (next.translationStore.get(pathname) || emptyMap).keySeq().hashCode();
 
     if (pathname !== next.pathname || search !== next.search || anyNewTranslation) {
       this.setState({ sortedKeys: this.sortAndFilterKeys(next.search) });
@@ -58,17 +44,17 @@ export class Editor extends React.PureComponent<EditorProps, EditorState> {
   }
 
   sortAndFilterKeys(search: string): SortedKeys {
-    const { translationStore, pathname } = this.props;
+    const { translationStore, locale, pathname } = this.props;
 
     const searchPattern = search.length > 0
       ? new RegExp(search.split(' ').join('.*'), 'i')
       : null;
 
-    const keys = (translationStore.get(pathname) || Map());
-
+    const keys = (translationStore.get(pathname) || emptyMap);
+    const localeKeys = keys.filter((d: StoredTranslation) => `${d.get('key')}`.startsWith(locale));
     const filteredKeys = searchPattern
-      ? keys.filter((d: StoredTranslation) => searchPattern.test([d.get('key'), d.get('text')].join()))
-      : keys;
+      ? localeKeys.filter((d: StoredTranslation) => searchPattern.test([d.get('key'), d.get('text')].join()))
+      : localeKeys;
 
     return filteredKeys.sortBy((k: StoredTranslation) => k.get('key')) as SortedKeys;
   }

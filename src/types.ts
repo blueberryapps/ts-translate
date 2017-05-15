@@ -21,14 +21,17 @@ export interface TranslatorOptions {
   messages?: Messages | any;
 }
 
-export interface MsgOptions {
-  disableDefault?: boolean;
-  scope?: string;
-}
-
 export interface InterpolationDictionary {
   [key: string]: string | number;
 }
+
+export interface OverrideOptions {
+  disableDefault?: boolean;
+  scope?: string;
+  [key: string]: string | number | boolean | undefined;
+}
+
+export type MsgOptions = OverrideOptions;
 
 export type Version = string;
 

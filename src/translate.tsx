@@ -4,6 +4,10 @@ import { Messages, MsgOptions, TranslationResult } from './types';
 
 import *  as React from 'react';
 
+export interface TextFunc {
+  (key: string, options?: MsgOptions): string;
+}
+
 export interface CntFunc {
   (key: string, options?: MsgOptions): JSX.Element;
 }
@@ -95,7 +99,7 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
       }
 
       // tslint:disable-next-line:typedef
-      text: Msg = (key, options = {}) => this.resolveMsg(key, options).result;
+      text: TextFunc = (key, options = {}) => `${this.resolveMsg(key, options).result}`;
 
       // tslint:disable-next-line:typedef
       cnt: CntFunc = (key, options = {}) => this.msg(key, options);
