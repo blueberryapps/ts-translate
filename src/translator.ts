@@ -201,7 +201,8 @@ export class Translator {
   }
 
   __findTranslationForLocale(locale: string, keys: string[]): LookupResult {
-    return this.__messages().getIn([locale].concat(keys));
+    // first try flatmap search and then use classic search
+    return this.__messages().get(keys.join('.')) || this.__messages().getIn([locale].concat(keys));
   }
 
   __locale() {

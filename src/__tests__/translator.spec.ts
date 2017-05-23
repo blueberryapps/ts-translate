@@ -48,6 +48,12 @@ const messages = fromJS({
   },
 }) as Messages;
 
+const flatMapMessages = fromJS({
+  'en.views.homepage.title': 'Welcome!',
+  'en.views.homepage.title.subsection.heading': 'First title',
+  'en.views.homepage.title.subsection.text': 'Lorem ipsum dolor',
+}) as Messages;
+
 it('should return default text', () => {
   expect(new Translator({ messages, locale }).msg('Not translated')).toEqual('Not translated');
 });
@@ -409,5 +415,15 @@ describe('connector to translation server', () => {
         },
       },
     });
+  });
+});
+
+describe('using messages from flatmaps', () => {
+  it('finds correct key in messages', () => {
+    expect(new Translator({ messages: flatMapMessages, locale }).msg('en.views.homepage.title')).toEqual('Welcome!');
+  });
+
+  it('should combine keys into one string and find it in flatmap', () => {
+    expect(new Translator({ messages: flatMapMessages, locale }).msg(['en', 'views', 'homepage', 'title'])).toEqual('Welcome!');
   });
 });
