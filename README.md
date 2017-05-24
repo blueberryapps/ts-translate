@@ -217,9 +217,12 @@ Enables you to list and download releases to your project.
 ```
 yarn translate-list // List all created releases
 yarn translate-fetch // Download one specified release (for locale) to specified folder
+yarn translate-fetch-latest-releases // Download all latest releases for all locales
 ```
 
-Both commands supports taking `apiToken` and `apiUrl` from ENV variables (`TRANSLATE_API_TOKEN`, `TRANSLATE_API_URL`) or command line (`--apiToken`, `--apiUrl`) arguments
+Both commands supports taking `apiToken` and `apiUrl` from ENV variables (`TRANSLATE_API_TOKEN`, `TRANSLATE_API_URL`) or command line (`--apiToken`, `--apiUrl`) arguments.
+
+Fetch commands also needs `--releasesDir` option for specifiyng where to save downloaded releases.
 
 ### Passing config to Provider
 

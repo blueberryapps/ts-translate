@@ -8,6 +8,7 @@
   "license": "MIT",
   "bin": {
     "translate-list": "bin/translate-list.js",
+    "translate-fetch-latest-releases": "bin/translate-fetch-latest-releases.js",
     "translate-fetch": "bin/translate-fetch.js"
   },
   "scripts": {
