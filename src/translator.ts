@@ -2,6 +2,7 @@ import { fromJS, Map } from 'immutable';
 import Connector from './Connector';
 import defaultFormats from './defaultFormats';
 import { DefaultFormatOptions, defaultOptions, formatDate, formatNumber, FormatOptions, GivenDate } from './format';
+import { createStructuredJSON } from './structuredJSON';
 import { AppStore, InterpolationDictionary, Messages, MsgOptions, TranslationResult, TranslatorOptions } from './types';
 
 const INTERPOLATION_REGEXP = /%{([\w0-9]+)}/g;
@@ -54,7 +55,7 @@ export class Translator {
     if (isAppStore(options)) {
       this.store = options;
     } else {
-      this.messages = options.messages || fromJS({ en: {}});
+      this.messages = createStructuredJSON(options.messages) || fromJS({ en: {}});
       this.locale = options.locale;
       this.fallbackLocale = options.fallbackLocale || this.fallbackLocale;
     }
@@ -201,8 +202,7 @@ export class Translator {
   }
 
   __findTranslationForLocale(locale: string, keys: string[]): LookupResult {
-    // first try flatmap search and then use classic search
-    return this.__messages().get(keys.join('.')) || this.__messages().getIn([locale].concat(keys));
+    return this.__messages().getIn([locale].concat(keys));
   }
 
   __locale() {

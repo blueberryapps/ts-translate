@@ -50,8 +50,20 @@ const messages = fromJS({
 
 const flatMapMessages = fromJS({
   'en.views.homepage.title': 'Welcome!',
-  'en.views.homepage.title.subsection.heading': 'First title',
-  'en.views.homepage.title.subsection.text': 'Lorem ipsum dolor',
+  'en.views.homepage.subsection.heading': 'First title',
+  'en.views.homepage.subsection.text': 'Lorem ipsum dolor',
+  'es.views.homepage.title': 'Bueno!',
+}) as Messages;
+
+const hybridMapMessages = fromJS({
+  en: {
+    'views.homepage.title': 'Welcome!',
+    'views.homepage.subsection.heading': 'First title',
+    'views.homepage.subsection.text': 'Lorem ipsum dolor',
+  },
+  es: {
+    'views.homepage.title': 'Bueno!',
+  },
 }) as Messages;
 
 it('should return default text', () => {
@@ -418,12 +430,31 @@ describe('connector to translation server', () => {
   });
 });
 
+describe('creating proper JSON structure from flatmap', () => {
+  it('should create structured JSON', () => {
+    const translator = new Translator({ messages: flatMapMessages, locale });
+    expect(translator.__messages().getIn(['en', 'views', 'homepage', 'title'])).toEqual('Welcome!');
+  });
+});
+
 describe('using messages from flatmaps', () => {
   it('finds correct key in messages', () => {
-    expect(new Translator({ messages: flatMapMessages, locale }).msg('en.views.homepage.title')).toEqual('Welcome!');
+    expect(new Translator({ messages: flatMapMessages, locale }).msg('views.homepage.title')).toEqual('Welcome!');
+  });
+
+  it('finds correct key in messages for Spanish', () => {
+    expect(new Translator({ messages: flatMapMessages, locale: 'es' }).msg('views.homepage.title')).toEqual('Bueno!');
   });
 
   it('should combine keys into one string and find it in flatmap', () => {
-    expect(new Translator({ messages: flatMapMessages, locale }).msg(['en', 'views', 'homepage', 'title'])).toEqual('Welcome!');
+    expect(new Translator({ messages: flatMapMessages, locale }).msg(['views', 'homepage', 'title'])).toEqual('Welcome!');
+  });
+
+  it('should be able to combine flatmap and structured messages', () => {
+    expect(new Translator({ messages: hybridMapMessages, locale }).msg('views.homepage.title')).toEqual('Welcome!');
+  });
+
+  it('should be able to combine flatmap and structured messages for Spanish', () => {
+    expect(new Translator({ messages: hybridMapMessages, locale: 'es' }).msg('views.homepage.title')).toEqual('Bueno!');
   });
 });
