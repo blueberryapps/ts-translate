@@ -6,5 +6,6 @@ export { translate, TranslateProps } from './translate';
 export { Translator } from './translator';
 export { AppState, Messages, TranslatorOptions, TranslationResult } from './types';
 export { classifyKey } from './classifyKey';
+export { createStructuredJSON } from './structuredJSON';
 import translate from './translate';
 export default translate;
