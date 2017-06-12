@@ -11,7 +11,7 @@ export interface Msg {
   (key: string | string[], options?: MsgOptions): TranslationResult;
 }
 
-export interface MsgClickHanlder {
+export interface MsgClickHandler {
   (key: string | string[], element: React.Component<any, any>): void;
 }
 
@@ -49,7 +49,7 @@ export class Translator {
   fallbackLocale = '';
   store: AppStore | null = null;
   connector: Connector | undefined;
-  listeners: MsgClickHanlder[] = [];
+  listeners: MsgClickHandler[] = [];
 
   constructor(options: TranslatorOptions | AppStore, connector?: Connector) {
     if (isAppStore(options)) {
@@ -62,11 +62,11 @@ export class Translator {
     this.connector = connector;
   }
 
-  onMsgClick: MsgClickHanlder = (key, element) => {
+  onMsgClick: MsgClickHandler = (key, element) => {
     this.listeners.forEach((listener) => listener(key, element));
   }
 
-  subscribeMsgClick(listener: MsgClickHanlder): () => void {
+  subscribeMsgClick(listener: MsgClickHandler): () => void {
     this.listeners.push(listener);
 
     const unsubscribe = () => {
