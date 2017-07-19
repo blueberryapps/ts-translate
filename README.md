@@ -1,4 +1,4 @@
-# Translate [![Dependency Status](https://dependencyci.com/github/blueberryapps/ts-translate/badge)](https://dependencyci.com/github/blueberryapps/ts-translate)
+# Translate [![CircleCI](https://circleci.com/gh/blueberryapps/ts-translate.svg?style=svg&circle-token=a563b2487e38a0b14313458d81abf949ea784c25)](https://circleci.com/gh/blueberryapps/ts-translate) [![Dependency Status](https://dependencyci.com/github/blueberryapps/ts-translate/badge)](https://dependencyci.com/github/blueberryapps/ts-translate)
 
 Helps you to translate text from messages object. Allows you to format numbers, dates,
 interpolate text to string templates, default text as key, scoping translations,
