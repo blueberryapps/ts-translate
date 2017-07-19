@@ -13,12 +13,13 @@ echo "Trying to publish..."
 npm publish > ${tempLog} 2>&1
 
 if [ $? -eq 0 ]; then
+  echo "Successfully published!"
+
   curl -H "Content-Type: application/json" \
        -X POST \
        -d "{\"text\":\"A new version *$version* of *$name* package has been just published. <https://www.npmjs.com/package/$name>\",\"username\":\"circle-ci\",\"icon_emoji\":\":tada:\"}" \
-       https://hooks.slack.com/services/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
+       "https://hooks.slack.com/services/$SLACK_TOKENS"
 
-  echo "Successfully published!"
 else
   grep -q "You cannot publish over the previously published version" npm-debug.log
   grepStatus=$?
@@ -30,7 +31,7 @@ else
   fi
 
   rm -f ${tempLog}
-  exit $grepStatus
+  exit 0
 fi
 
 rm -f ${tempLog}
