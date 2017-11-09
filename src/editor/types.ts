@@ -1,10 +1,14 @@
 import { Map } from 'immutable';
-import { StoredTranslation, StoredTranslations }from '../Connector';
+import { StoredTranslation, StoredTranslations } from '../Connector';
 import { Dispatch, Messages } from '../types';
-import { UpdateTranslation } from './TranslationEditor';
+//import { UpdateTranslation } from './TranslationEditor';
 
 export type SortedKeys = Map<string, StoredTranslation>;
 export type PendingChanges = Map<string, string>;
+
+export interface UpdateTranslation {
+  (key: string, text: string, keyPath?: string): void;
+}
 
 export interface EditorProps {
   dispatch: Dispatch;

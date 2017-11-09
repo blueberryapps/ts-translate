@@ -18,25 +18,13 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "./typings/*"
-      ]
-    }
+    "baseUrl": "."
   },
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "src/setupTests.ts",
-    "lib",
-    "bin"
+  "include": [
+    "src/index.ts",
+    "src/editor/types.ts"
   ],
-  "types": [
-    "typePatches"
+  "exclude": [
+    "__tests__"
   ]
 }

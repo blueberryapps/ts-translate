@@ -8,6 +8,7 @@ import { updateMessages } from '../actions';
 import { StoredTranslation, StoredTranslations }from '../Connector';
 import { Translator } from '../translator';
 import { AppStore, Messages, TranslationResult} from '../types';
+import { UpdateTranslation } from './types';
 import Editor from './Editor';
 import Opener from './Opener';
 import Panel from './Panel';
@@ -25,9 +26,6 @@ export interface SetUser {
 }
 export interface SetError {
   (error?: string): void;
-}
-export interface UpdateTranslation {
-  (key: string, text: string, keyPath?: string): void;
 }
 
 function convertDotPath(path: string, value: TranslationResult): any {
