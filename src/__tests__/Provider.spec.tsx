@@ -1,4 +1,5 @@
 import { fromJS  } from 'immutable';
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import { Component } from 'react';
 import * as TestUtils from 'react-addons-test-utils';
@@ -23,7 +24,7 @@ const store = createStore(({}, action: TranslateAction) => ({ translate: reducer
 describe('Translate Provider', () => {
   class Passthrough extends Component<{}, {}> {
     static contextTypes = {
-      translator: React.PropTypes.object,
+      translator: PropTypes.object,
     };
 
     render() {

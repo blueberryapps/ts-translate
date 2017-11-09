@@ -1,6 +1,6 @@
 {
   "name": "ts-translate",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "main": "lib/index.js",
   "typings": "lib/index",
   "repository": "git@github.com:blueberryapps/ts-translate.git",
@@ -23,6 +23,7 @@
     "@types/jest": "^18.1.1",
     "@types/moment": "^2.13.0",
     "@types/nock": "^8.2.1",
+    "@types/prop-types": "^15.5.2",
     "@types/radium": "^0.18.20",
     "@types/react": "^15.0.14",
     "@types/react-addons-test-utils": "^0.14.17",
@@ -33,6 +34,7 @@
     "jest": "^19.0.2",
     "moment": "^2.17.1",
     "nock": "^9.0.9",
+    "prop-types": "^15.6.0",
     "radium": "^0.18.2",
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",

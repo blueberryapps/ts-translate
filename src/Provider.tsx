@@ -1,3 +1,4 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import Connector from './Connector';
 import { Translator } from './translator';
@@ -27,7 +28,7 @@ export class Provider extends React.Component<ProviderProps, ProviderState> { //
   translator?: Translator = undefined;
 
   static contextTypes = {
-    store: React.PropTypes.object,
+    store: PropTypes.object,
   };
 
   static childContextTypes = {

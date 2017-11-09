@@ -1,9 +1,9 @@
 import { Map } from 'immutable';
 import * as fetch from 'isomorphic-fetch';
+import * as PropTypes from 'prop-types';
 import * as Radium from 'radium';
 import { Style } from 'radium';
 import * as React from 'react';
-import { PropTypes as RPT } from 'react';
 import { updateMessages } from '../actions';
 import { StoredTranslation, StoredTranslations }from '../Connector';
 import { Translator } from '../translator';
@@ -70,8 +70,8 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
   context: TranslationEditorContext;
 
   static contextTypes = {
-    translator: RPT.object,
-    store: RPT.object,
+    translator: PropTypes.object,
+    store: PropTypes.object,
   };
 
   state = {
