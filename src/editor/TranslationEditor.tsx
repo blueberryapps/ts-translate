@@ -15,7 +15,7 @@ import Panel from './Panel';
 import Search from './Search';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
-import User from './User';
+import * as U from './User';
 
 export interface ApiCall {
   (method: 'put' | 'post' | 'delete' | 'get', endpoint: string, data?: any): Promise<any>;
@@ -232,7 +232,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
           {opened && user.username &&
             <Panel error={error}>
               <div style={style.navigation}>
-                <User {...user} />
+                <U.User {...user} />
                 <SignOut apiCall={this.apiCall} setUser={this.setUser} />
               </div>
               <Search search={search} onChange={(search) => this.setState({ search })} />

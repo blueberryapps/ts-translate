@@ -22,7 +22,7 @@
   },
   "include": [
     "src/index.ts",
-    "src/editor/types.ts"
+    "src/editor/*"
   ],
   "exclude": [
     "__tests__"
