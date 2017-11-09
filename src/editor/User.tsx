@@ -9,7 +9,7 @@ export interface UserProps {
 
 export const User: React.StatelessComponent<UserProps> = ({ username, photo }) => (
   <div style={style.wrapper}>
-    <img src={photo} alt={username} style={style.image} />
+    <img src={photo} alt={username} style={style.image as any} />
     {username}
   </div>
 );

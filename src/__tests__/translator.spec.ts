@@ -168,11 +168,11 @@ describe('formatNumber', () =>  {
   });
 
   it('returns formatted number with currency option', () =>  {
-    expect(new Translator({ messages, locale }).formatNumber(123456.789, 'currency')).toEqual('123,456.789 $');
+    expect(new Translator({ messages, locale }).formatNumber(123456.789, 'currency' as any)).toEqual('123,456.789 $');
   });
 
   it('returns formatted number with percentage option', () =>  {
-    expect(new Translator({ messages, locale }).formatNumber(123456.789, 'percentage')).toEqual('123,456.789 %');
+    expect(new Translator({ messages, locale }).formatNumber(123456.789, 'percentage' as any)).toEqual('123,456.789 %');
   });
 
   it('returns formatted number with override options', () =>  {

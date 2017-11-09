@@ -7,7 +7,7 @@ export interface SignOutProps {
   setUser: SetUser;
 }
 
-export class SignOut extends React.PureComponent<SignOutProps, void> {
+export class SignOut extends React.PureComponent<SignOutProps, {}> {
   logout = () => {
     const { apiCall, setUser } = this.props;
     apiCall('delete', '/api_frontend/v1/logout').then(() => {

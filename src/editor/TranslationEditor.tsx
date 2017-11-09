@@ -153,9 +153,9 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
       method,
       body: method === 'get' ? null : JSON.stringify(data),
       credentials: 'include',
-      headers: {
+      headers: ({
         'Content-type': 'application/json',
-      },
+      } as any),
     }).then((d: Response) => d.json()).catch((error: Error) => this.setError(JSON.stringify(error)));
   }
 
@@ -210,7 +210,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     const { store: { getState, dispatch } } = this.context;
 
     return (
-      <div style={style.wrapper}>
+      <div style={style.wrapper as any}>
         <Opener open={this.togglOpen} width={PANEL_WIDTH} opened={opened} />
         <div style={[style.container, opened && style.containerMoved]}>
           {children}
@@ -227,7 +227,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
           }
           {opened && user.username &&
             <Panel error={error}>
-              <div style={style.navigation}>
+              <div style={style.navigation as any}>
                 <User {...user} />
                 <SignOut apiCall={this.apiCall} setUser={this.setUser} />
               </div>

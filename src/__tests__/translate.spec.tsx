@@ -34,7 +34,7 @@ describe('Translate Decorator', () => {
     }
   }
 
-  class Container extends React.Component<TranslateProps, void> {
+  class Container extends React.Component<TranslateProps, {}> {
     render() {
       return (
         <Passthrough {...this.props} />
@@ -89,7 +89,7 @@ describe('Translate Decorator', () => {
   });
 
   describe('shouldComponentUpdate', () => {
-    const DecoratedContainer = translate<{}>()(Passthrough);
+    const DecoratedContainer = translate<{}>()(Passthrough as any);
     const getSpy = () => {
       const container = TestUtils.renderIntoDocument(
         <ReduxProvider store={store}>
