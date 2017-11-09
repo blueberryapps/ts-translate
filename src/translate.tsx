@@ -1,3 +1,4 @@
+import * as PropTypes from 'prop-types';
 import createCnt from './createCnt';
 import { FormatDate, FormatNumber, Msg, Resolve, Translator } from './translator';
 import { Messages, MsgOptions, TranslationResult } from './types';
@@ -54,8 +55,8 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
       };
 
       static contextTypes = {
-        store: React.PropTypes.object,
-        translator: React.PropTypes.object,
+        store: PropTypes.object,
+        translator: PropTypes.object,
       };
 
       componentWillMount() {
