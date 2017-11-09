@@ -14,14 +14,14 @@ import Panel from './Panel';
 import Search from './Search';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
-import User from './User';
+import User, { UserProps } from './User';
 
 export interface ApiCall {
   (method: 'put' | 'post' | 'delete' | 'get', endpoint: string, data?: any): Promise<any>;
 }
 
 export interface SetUser {
-  (user?: User): void;
+  (user?: UserProps): void;
 }
 export interface SetError {
   (error?: string): void;
@@ -45,12 +45,6 @@ export interface TranslationEditorContext {
   store: AppStore;
 }
 
-export interface User {
-  username?: string;
-  photo?: string;
-  email?: string;
-}
-
 export interface TranslationEditorState {
   error?: string;
   opened: boolean;
@@ -59,7 +53,7 @@ export interface TranslationEditorState {
   locale: string;
   messages: Messages;
   pathname: string;
-  user: User;
+  user: UserProps;
   translationStore: StoredTranslations;
   translatorSubscription: () => void;
   unsubscribeStore: () => void;
@@ -132,7 +126,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     dispatch(updateMessages(convertDotPath(keyPath, event.target.value)));
   }
 
-  setUser: SetUser = (user) => this.setState({ user: user || { username: undefined } as User });
+  setUser: SetUser = (user) => this.setState({ user: user || { username: undefined } as UserProps });
   setError: SetError = (error) => this.setState({ error });
   togglOpen = () => this.setState({ opened: !this.state.opened });
   updateSearch = (search: string) => this.setState({ search });
