@@ -2,7 +2,7 @@
 
 import { fromJS  } from 'immutable';
 import * as React from 'react';
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Action, combineReducers, createStore } from 'redux';
 import { changeLocale, updateMessages } from '../actions';
