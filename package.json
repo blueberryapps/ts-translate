@@ -1,6 +1,6 @@
 {
   "name": "ts-translate",
-  "version": "3.3.0",
+  "version": "4.0.0-alpha1",
   "main": "lib/index.js",
   "typings": "lib/index",
   "repository": "git@github.com:blueberryapps/ts-translate.git",
@@ -19,33 +19,31 @@
     "prepublish": "yarn tslint && yarn test && yarn cleanupBuild && yarn compile"
   },
   "devDependencies": {
-    "@types/isomorphic-fetch": "^0.0.33",
-    "@types/jest": "^18.1.1",
+    "@types/isomorphic-fetch": "^0.0.34",
+    "@types/jest": "^21.1.5",
     "@types/moment": "^2.13.0",
     "@types/nock": "^8.2.1",
     "@types/prop-types": "^15.5.2",
-    "@types/radium": "^0.18.20",
-    "@types/react": "^15.0.14",
-    "@types/react-addons-test-utils": "^0.14.17",
-    "@types/react-dom": "^0.14.23",
-    "@types/react-redux": "^4.4.37",
-    "immutable": "^3.8.1",
+    "@types/radium": "^0.18.23",
+    "@types/react": "^16.0.22",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-redux": "^5.0.12",
+    "immutable": "^3.8.2",
     "isomorphic-fetch": ">=2.0.0",
-    "jest": "^19.0.2",
+    "jest": "^21.2.1",
     "moment": "^2.17.1",
     "nock": "^9.0.9",
     "prop-types": "^15.6.0",
-    "radium": "^0.18.2",
+    "radium": "^0.19.6",
     "react": "^15.4.2",
-    "react-addons-test-utils": "^15.4.2",
-    "react-dom": "^15.4.2",
+    "react-dom": "^16.1.0",
     "react-redux": "^5.0.3",
-    "ts-jest": "^19.0.0",
+    "ts-jest": "^21.2.1",
     "ts-node": "^2.1.0",
     "tslint": "^4.5.1",
     "tslint-eslint-rules": "^4.0.0",
     "tslint-react": "^2.5.0",
-    "typescript": "^2.2.1",
+    "typescript": "^2.6.1",
     "url": ">=0.9.0"
   },
   "jest": {
@@ -66,9 +64,9 @@
   },
   "optionalDependencies": {
     "isomorphic-fetch": "^2.2.1",
-    "radium": ">=0.16.0",
-    "react": ">=13.0.0",
-    "react-redux": ">=4.0.0"
+    "radium": "^0.19.6",
+    "react": "^16.1.0",
+    "react-redux": "^5.0.6"
   },
   "dependencies": {}
 }

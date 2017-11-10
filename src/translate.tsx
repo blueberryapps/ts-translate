@@ -141,7 +141,7 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
       render() {
         return (
           <WrappedComponent
-            {...this.getTranslateMethods()}
+            {...this.getTranslateMethods() as any}
             {...this.props}
           />
         );

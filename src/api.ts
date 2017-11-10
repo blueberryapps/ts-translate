@@ -22,10 +22,10 @@ export default async function api(config: ApiConfig, method: ApiMethod, endpoint
     response = await fetch(apiUrl, {
       method,
       credentials: 'include',
-      headers:     {
+      headers: ({
         'Content-type': 'application/json',
         Authorization: `Token token=${config.apiToken}`,
-      },
+      } as any),
       body: data ? JSON.stringify(data) : null,
     });
   } catch (e) {

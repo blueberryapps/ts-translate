@@ -10,7 +10,7 @@ describe('Connector', () => {
 
   const dispatch = () => {};
 
-  const createConnector = (pathname?: string) => new Connector(config, dispatch, pathname || '/');
+  const createConnector = (pathname?: string) => new Connector(config, dispatch as any, pathname || '/');
 
   describe('updateLocation()', () => {
     it('should return new location', () => {

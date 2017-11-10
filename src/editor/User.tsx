@@ -1,10 +1,15 @@
 import * as Radium from 'radium';
 import * as React from 'react';
-import { User as UserProps } from './TranslationEditor';
+
+export interface UserProps {
+  username?: string;
+  photo?: string;
+  email?: string;
+}
 
 export const User: React.StatelessComponent<UserProps> = ({ username, photo }) => (
   <div style={style.wrapper}>
-    <img src={photo} alt={username} style={style.image} />
+    <img src={photo} alt={username} style={style.image as any} />
     {username}
   </div>
 );

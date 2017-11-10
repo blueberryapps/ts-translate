@@ -2,7 +2,7 @@ import { fromJS  } from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import { Component } from 'react';
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 import { Provider as ReduxProvider } from 'react-redux';
 import { createStore } from 'redux';
 import { changeLocale, TranslateAction } from '../actions';

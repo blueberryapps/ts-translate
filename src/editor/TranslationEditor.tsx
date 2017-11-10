@@ -14,14 +14,14 @@ import Panel from './Panel';
 import Search from './Search';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
-import User from './User';
+import User, { UserProps } from './User';
 
 export interface ApiCall {
   (method: 'put' | 'post' | 'delete' | 'get', endpoint: string, data?: any): Promise<any>;
 }
 
 export interface SetUser {
-  (user?: User): void;
+  (user?: UserProps): void;
 }
 export interface SetError {
   (error?: string): void;
@@ -45,12 +45,6 @@ export interface TranslationEditorContext {
   store: AppStore;
 }
 
-export interface User {
-  username?: string;
-  photo?: string;
-  email?: string;
-}
-
 export interface TranslationEditorState {
   error?: string;
   opened: boolean;
@@ -59,7 +53,7 @@ export interface TranslationEditorState {
   locale: string;
   messages: Messages;
   pathname: string;
-  user: User;
+  user: UserProps;
   translationStore: StoredTranslations;
   translatorSubscription: () => void;
   unsubscribeStore: () => void;
@@ -132,7 +126,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     dispatch(updateMessages(convertDotPath(keyPath, event.target.value)));
   }
 
-  setUser: SetUser = (user) => this.setState({ user: user || { username: undefined } as User });
+  setUser: SetUser = (user) => this.setState({ user: user || { username: undefined } as UserProps });
   setError: SetError = (error) => this.setState({ error });
   togglOpen = () => this.setState({ opened: !this.state.opened });
   updateSearch = (search: string) => this.setState({ search });
@@ -159,9 +153,9 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
       method,
       body: method === 'get' ? null : JSON.stringify(data),
       credentials: 'include',
-      headers: {
+      headers: ({
         'Content-type': 'application/json',
-      },
+      } as any),
     }).then((d: Response) => d.json()).catch((error: Error) => this.setError(JSON.stringify(error)));
   }
 
@@ -216,7 +210,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     const { store: { getState, dispatch } } = this.context;
 
     return (
-      <div style={style.wrapper}>
+      <div style={style.wrapper as any}>
         <Opener open={this.togglOpen} width={PANEL_WIDTH} opened={opened} />
         <div style={[style.container, opened && style.containerMoved]}>
           {children}
@@ -233,7 +227,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
           }
           {opened && user.username &&
             <Panel error={error}>
-              <div style={style.navigation}>
+              <div style={style.navigation as any}>
                 <User {...user} />
                 <SignOut apiCall={this.apiCall} setUser={this.setUser} />
               </div>
