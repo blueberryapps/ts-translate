@@ -39,6 +39,7 @@ export type Locale = string;
 
 export interface ApiConfig {
   apiUrl?: string;
+  apiEndpoint?: string;
   apiToken?: string;
   releasesDir?: string;
   sync?: boolean;
