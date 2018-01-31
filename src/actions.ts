@@ -37,7 +37,7 @@ export function updateMessages(messages: Messages): TranslateAction {
  * @param {Object}  config configuration options
  * @return {Object}        declared action
  */
-export function fetchTranslations(config: ApiConfig) {  
+export function fetchTranslations(config: ApiConfig) {
   return (dispatch: Dispatch<void>) => {
     dispatch({ type: 'TRANSLATE_FETCH_START' });
     const getPromise = async () => {
