@@ -58,8 +58,16 @@ export class Provider extends React.Component<ProviderProps, ProviderState> { //
     const { config, pathname } = this.props;
 
     if (!this.connector) {
-      this.connector = (config && config.sync)
-        ? new Connector(config, store.dispatch, pathname)
+      const apiConfig = Object.assign({}, {
+        apiUrl: null,
+        apiEndpoint: 'api/v1/translations',
+        apiToken: null,
+        releasesDir: null,
+        sync: null,
+        liveSync: null   
+    }, config);
+      this.connector = (apiConfig && apiConfig.sync)
+        ? new Connector(apiConfig, store.dispatch, pathname)
         : undefined;
     }
 
