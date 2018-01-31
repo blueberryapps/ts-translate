@@ -65,6 +65,8 @@ export default class Connector {
       return;
     }
 
+    const apiEndpoint = this.config.apiEndpoint || 'api/v1/translations';
+
     this.translationStore.reduce(
       (output: Map<string, TranslationResult>, translations: StoredTranslations, location: string) => (
         output.set(
@@ -76,7 +78,7 @@ export default class Connector {
     )
     .filter((translations: StoredTranslations) => !translations.isEmpty())
     .map((translations: StoredTranslations, location: string) =>
-      this.api(this.config, 'POST', 'api/v1/translations', {
+      this.api(this.config, 'POST', apiEndpoint, {
         location,
         locale:       this.locale,
         translations: translations.toIndexedSeq().toJS(),

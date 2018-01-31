@@ -39,11 +39,11 @@ export type Locale = string;
 
 export interface ApiConfig {
   apiUrl?: string;
+  apiEndpoint?: string;
   apiToken?: string;
   releasesDir?: string;
   sync?: boolean;
   liveSync?: boolean;
-  customApiUrl?: boolean;
 }
 
 export interface ReleaseVersion {
