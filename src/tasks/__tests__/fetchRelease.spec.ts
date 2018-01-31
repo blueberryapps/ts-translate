@@ -5,7 +5,7 @@ import fetchRelease from '../fetchRelease';
 
 describe('fetchRelease()', () => {
   const releasesDir = path.join(__dirname, 'test_fetch_release');
-  const config = { apiToken: 'X', apiUrl: 'http://translation.cz', releasesDir };
+  const config = { apiToken: 'X', apiUrl: 'http://translation.cz', apiEndpoint: 'api/v1/releases', releasesDir };
 
   // afterEach(() => {
   //   try {
@@ -13,7 +13,7 @@ describe('fetchRelease()', () => {
   //   } catch (e) {
   //   }
   // });
-
+  
   nock('http://translation.cz', {
     reqheaders: {
       Authorization: 'Token token=X',
@@ -37,8 +37,9 @@ describe('fetchRelease()', () => {
     const result = await fetchRelease(config, 'cs_v001');
     expect(result).toEqual({ cs: { foo: 'Bar' } });
 
-    expect(fs.readFileSync(path.join(releasesDir, 'cs.json')).toString())
-      .toEqual(fs.readFileSync(path.join(__dirname, 'fixture_cs.json')).toString());
+    const result2 = JSON.parse(fs.readFileSync(path.join(releasesDir, 'cs.json')).toString());
+    const source = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixture_cs.json')).toString());
+    expect(result2).toEqual(source);
   });
 
   it('throw error without config releasesDir', async () => {

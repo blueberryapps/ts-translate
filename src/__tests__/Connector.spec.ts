@@ -5,6 +5,7 @@ describe('Connector', () => {
   const config = {
     sync: true,
     apiUrl: 'http://translations.blueberry.io',
+    apiEndpoint: 'api/v1/translations',
     apiToken: 'XYZ',
   };
 
