@@ -43,6 +43,7 @@ export interface ApiConfig {
   releasesDir?: string;
   sync?: boolean;
   liveSync?: boolean;
+  customApiUrl?: boolean;
 }
 
 export interface ReleaseVersion {
