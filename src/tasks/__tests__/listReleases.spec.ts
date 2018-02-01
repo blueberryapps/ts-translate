@@ -2,7 +2,7 @@ import * as nock from 'nock';
 import listReleases from '../listReleases';
 
 describe('listReleases()', () => {
-  const config = { apiToken: 'X', apiUrl: 'http://translation.cz' };
+  const config = { apiToken: 'X', apiUrl: 'http://translation.cz', apiEndpoint: 'api/v1/releases' };
   nock('http://translation.cz', {
     reqheaders: {
       Authorization: 'Token token=X',

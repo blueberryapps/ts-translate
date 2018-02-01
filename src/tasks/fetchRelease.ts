@@ -17,7 +17,7 @@ export default async function fetchRelease(config: ApiConfig, version: Version) 
 
   console.log(`Downloading release ${version} from ${config.apiUrl}`);
   const locale = version.split('_').slice(0, -1).join('_');
-  const releases = await api(config, 'GET', `/api/v1/releases/${version}.json`);
+  const releases = await api(config, 'GET', `${config.apiEndpoint!}/${version}.json`);
   const releaseFile = path.join(config.releasesDir, `${locale}.json`);
 
   fs.writeFileSync(releaseFile, `${JSON.stringify(releases, null, 2)}\n`);
