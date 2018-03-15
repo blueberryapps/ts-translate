@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import * as React from 'react';
 import { classifyKey } from './classifyKey';
-import { MsgClickHanlder } from './translator';
+import { MsgClickHandler } from './translator';
 import { TranslationResult } from './types';
 
 export interface CntProps {
@@ -10,7 +10,7 @@ export interface CntProps {
 }
 
 export interface CreateCnt {
-  (key: string, result: TranslationResult, onClick?: MsgClickHanlder): JSX.Element;
+  (key: string, result: TranslationResult, onClick?: MsgClickHandler): JSX.Element;
 }
 
 export const createCnt: CreateCnt = (key, result, onClick) => {
@@ -56,7 +56,7 @@ export const createCnt: CreateCnt = (key, result, onClick) => {
 
 export const memoizeCreateCnt = (fn: CreateCnt) => {
   let memoizeCache = Map<string, Map<TranslationResult, JSX.Element>>();
-  return (key: string, result: TranslationResult, onClick?: MsgClickHanlder): JSX.Element => {
+  return (key: string, result: TranslationResult, onClick?: MsgClickHandler): JSX.Element => {
     if (memoizeCache.hasIn([key, result])) {
       return memoizeCache.getIn([key, result]);
     }

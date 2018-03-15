@@ -20,7 +20,7 @@ export interface HasMsgFunc {
 export interface TranslateProps {
   cnt: CntFunc;
   msg: CntFunc;
-  text: Msg;
+  text: TextFunc;
   hasMsg: HasMsgFunc;
   resolveMsg: Resolve;
   formatDate: FormatDate;
