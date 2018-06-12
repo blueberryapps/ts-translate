@@ -235,7 +235,7 @@ export class Translator {
 
   __interpolate(msg: string, dictionary: InterpolationDictionary): string {
     return msg.replace(INTERPOLATION_REGEXP, (val: string, match: string): string => {
-      return dictionary[match].toString();
+      return `${dictionary[match]}`;
     });
   }
 }
