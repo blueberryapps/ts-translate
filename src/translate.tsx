@@ -1,21 +1,13 @@
 import * as PropTypes from 'prop-types';
+import * as React from 'react';
+
 import createCnt from './createCnt';
 import { FormatDate, FormatNumber, Msg, Resolve, Translator } from './translator';
 import { Messages, MsgOptions, TranslationResult } from './types';
 
-import *  as React from 'react';
-
-export interface TextFunc {
-  (key: string, options?: MsgOptions): string;
-}
-
-export interface CntFunc {
-  (key: string, options?: MsgOptions): JSX.Element;
-}
-
-export interface HasMsgFunc {
-  (key: string, options?: MsgOptions): boolean;
-}
+export type TextFunc = (key: string, options?: MsgOptions) => string;
+export type CntFunc = (key: string, options?: MsgOptions) => JSX.Element;
+export type HasMsgFunc = (key: string, options?: MsgOptions) => boolean;
 
 export interface TranslateProps {
   cnt: CntFunc;

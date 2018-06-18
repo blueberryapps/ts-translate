@@ -9,9 +9,7 @@ export interface CntProps {
   usedKey: string;
 }
 
-export interface CreateCnt {
-  (key: string, result: TranslationResult, onClick?: MsgClickHanlder): JSX.Element;
-}
+type CreateCnt = (key: string, result: TranslationResult, onClick?: MsgClickHanlder) => JSX.Element;
 
 export const createCnt: CreateCnt = (key, result, onClick) => {
   class Cnt extends React.Component<CntProps, {}> {

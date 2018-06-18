@@ -1,5 +1,4 @@
-import * as Radium from 'radium';
-import { Style } from 'radium';
+import Radium from 'radium';
 import * as React from 'react';
 import { classifyKey } from '../classifyKey';
 import { style, UpdateTranslation } from './TranslationEditor';
@@ -12,7 +11,7 @@ export interface EditorProps {
 
 const StringEditor: React.StatelessComponent<EditorProps> = ({ value, onChange }) => (
   <textarea
-    style={[style.input, { minHeight: '70px', marginBottom: '5px' }]}
+    style={[style.input, { minHeight: '70px', marginBottom: '5px' }] as any}
     value={value || ''}
     onChange={onChange}
   />
@@ -50,7 +49,7 @@ export interface TranslationProps {
   pendingChanges: PendingChanges;
   text: string;
   updateTranslation: UpdateTranslation;
-};
+}
 
 export interface TranslationState {
   opened: boolean;
@@ -88,13 +87,13 @@ export class Translation extends React.PureComponent<TranslationProps, Translati
     const changed = pendingChanges.has(keyPath);
 
     return (
-      <div key="hovering" style={[styles.wrapper, changed && styles.changed]}>
+      <div key="hovering" style={[styles.wrapper, changed && styles.changed] as any}>
         <strong key={this.key().join('.')} style={styles.key} onClick={() => (this.setState({ opened: !opened }))} >{this.key().join('.')}</strong>
         {(opened || this.props.opened) && <EditorComponent value={text} onChange={onChange(keyPath, text)} />}
         {Radium.getState(this.state, 'hovering', ':hover') &&
-          <Style rules={{ [`.${classifyKey(this.key().join('.'))}`]: { background: 'red' } }} />}
+          <Radium.Style rules={{ [`.${classifyKey(this.key().join('.'))}`]: { background: 'red' } }} />}
         {changed && <button onClick={this.save} style={style.button} key={`${this.key()}Save`}>Save</button>}
-        {changed && <button onClick={this.restore} style={[style.button, styles.buttonSecondary]} key={`${this.key()}Restore`}>Restore</button>}
+        {changed && <button onClick={this.restore} style={[style.button, styles.buttonSecondary] as any} key={`${this.key()}Restore`}>Restore</button>}
       </div>
     );
   }

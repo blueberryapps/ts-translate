@@ -25,7 +25,7 @@ interface State {
   counter: number;
 }
 const counter = (state = 0, action: Action) => action.type === 'INC' ? state + 1 : state;
-const store = createStore<State>(combineReducers<State>({ translate: reducer, counter }), { translate: initial, counter: 2 });
+const store = createStore(combineReducers<State, Action>({ translate: reducer, counter } as any), { translate: initial, counter: 2 });
 
 describe('Translate Decorator', () => {
   class Passthrough extends React.Component<any, {}> {

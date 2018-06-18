@@ -1,4 +1,4 @@
-import * as Radium from 'radium';
+import Radium from 'radium';
 import * as React from 'react';
 
 export interface UserProps {

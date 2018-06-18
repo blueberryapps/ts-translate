@@ -7,34 +7,18 @@ import { AppStore, InterpolationDictionary, Messages, MsgOptions, TranslationRes
 
 const INTERPOLATION_REGEXP = /%{([\w0-9]+)}/g;
 
-export interface Msg {
-  (key: string | string[], options?: MsgOptions): TranslationResult;
-}
-
-export interface MsgClickHanlder {
-  (key: string | string[], element: React.Component<any, any>): void;
-}
-
-export interface Key {
-  (key: string | string[], options?: MsgOptions): string;
-}
+export type Msg = (key: string | string[], options?: MsgOptions) => TranslationResult;
+export type MsgClickHanlder = (key: string | string[], element: React.Component<any, any>) => void;
+export type Key = (key: string | string[], options?: MsgOptions) => string;
 
 export interface ResolveResult {
   result: TranslationResult;
   usedKey: string;
 }
 
-export interface Resolve {
-  (key: string | string[], options?: MsgOptions): ResolveResult;
-}
-
-export interface FormatDate {
-  (givenDate: GivenDate, customFormat?: string): string;
-}
-
-export interface FormatNumber {
-  (givenNumber: number, options?: FormatOptions): string;
-}
+export type Resolve = (key: string | string[], options?: MsgOptions) => ResolveResult;
+export type FormatDate = (givenDate: GivenDate, customFormat?: string) => string;
+export type FormatNumber = (givenNumber: number, options?: FormatOptions) => string;
 
 function isAppStore(x: any): x is AppStore {
   return (x && typeof x.getState === 'function');
