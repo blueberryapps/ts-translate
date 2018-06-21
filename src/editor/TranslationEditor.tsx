@@ -1,11 +1,10 @@
 import { Map } from 'immutable';
 import * as fetch from 'isomorphic-fetch';
 import * as PropTypes from 'prop-types';
-import * as Radium from 'radium';
-import { Style } from 'radium';
+import Radium from 'radium';
 import * as React from 'react';
 import { updateMessages } from '../actions';
-import { StoredTranslation, StoredTranslations }from '../Connector';
+import { StoredTranslation, StoredTranslations } from '../Connector';
 import { Translator } from '../translator';
 import { AppStore, Messages, TranslationResult} from '../types';
 import Editor from './Editor';
@@ -16,19 +15,10 @@ import SignIn from './SignIn';
 import SignOut from './SignOut';
 import User, { UserProps } from './User';
 
-export interface ApiCall {
-  (method: 'put' | 'post' | 'delete' | 'get', endpoint: string, data?: any): Promise<any>;
-}
-
-export interface SetUser {
-  (user?: UserProps): void;
-}
-export interface SetError {
-  (error?: string): void;
-}
-export interface UpdateTranslation {
-  (key: string, text: string, keyPath?: string): void;
-}
+export type ApiCall = (method: 'put' | 'post' | 'delete' | 'get', endpoint: string, data?: any) => Promise<any>;
+export type SetUser = (user?: UserProps) => void;
+export type SetError = (error?: string) => void;
+export type UpdateTranslation = (key: string, text: string, keyPath?: string) => void;
 
 function convertDotPath(path: string, value: TranslationResult): any {
   const [last, ...paths] = path.split('.').reverse();
@@ -49,7 +39,7 @@ export interface TranslationEditorState {
   error?: string;
   opened: boolean;
   search: string;
-  historyUnsubscribe?: () => void;
+  historyUnsubscribe: () => void;
   locale: string;
   messages: Messages;
   pathname: string;
@@ -72,7 +62,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     error: undefined,
     opened: false,
     search: '',
-    historyUnsubscribe: undefined,
+    historyUnsubscribe: () => {},
     messages: Map() as Messages,
     pathname: '/',
     locale: 'en',
@@ -108,17 +98,11 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
   }
 
   componentWillUnmount() {
-    const { unsubscribeStore, historyUnsubscribe, translatorSubscription } = this.state;
+    const { historyUnsubscribe, unsubscribeStore, translatorSubscription } = this.state;
 
-    if (unsubscribeStore) {
-      unsubscribeStore();
-    }
-    if (historyUnsubscribe) {
-      historyUnsubscribe();
-    }
-    if (translatorSubscription) {
-      translatorSubscription();
-    }
+    unsubscribeStore();
+    historyUnsubscribe();
+    translatorSubscription();
   }
 
   onChange = (keyPath: string) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -212,11 +196,11 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     return (
       <div style={style.wrapper as any}>
         <Opener open={this.togglOpen} width={PANEL_WIDTH} opened={opened} />
-        <div style={[style.container, opened && style.containerMoved]}>
+        <div style={[style.container, opened && style.containerMoved] as any}>
           {children}
         </div>
 
-        <div style={[style.panel, opened && style.panelOpened]}>
+        <div style={[style.panel, opened && style.panelOpened] as any}>
           {opened && !user.username &&
             <SignIn
               error={error}
@@ -241,7 +225,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
                 translationStore={translationStore}
                 updateTranslation={this.updateTranslation}
               />
-              <Style
+              <Radium.Style
                 rules={{
                   '.cnt': {
                     position: 'relative',
@@ -263,7 +247,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
                     bottom: '100%',
                     opacity: 0,
                   },
-                }}
+                } as React.CSSProperties}
               />
             </Panel>
           }

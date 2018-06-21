@@ -1,14 +1,14 @@
-import * as Radium from 'radium';
+import Radium from 'radium';
 import * as React from 'react';
 import { style } from './TranslationEditor';
 
 export interface SearchProps {
   onChange: (x: string) => void;
   search: string;
-};
+}
 
 const Search: React.StatelessComponent<SearchProps> = ({ onChange, search }) => (
-  <div style={[{position: 'relative'}, search.length > 0 && { marginRight: '34px'}]}>
+  <div style={[{position: 'relative'}, search.length > 0 && { marginRight: '34px'}] as any}>
     <input
       type="text"
       onChange={({target: { value }}) => onChange(value)}
@@ -17,7 +17,7 @@ const Search: React.StatelessComponent<SearchProps> = ({ onChange, search }) => 
       value={search}
     />
     {search.length > 0 &&
-      <button style={[style.button, reset]} onClick={() => onChange('')}>X</button>
+      <button style={[style.button, reset] as any} onClick={() => onChange('')}>X</button>
     }
   </div>
 );

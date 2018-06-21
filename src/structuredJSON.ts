@@ -24,7 +24,7 @@ export function createStructuredJSON(messages: Messages): Messages {
 }
 
 export function __structureObject(keys: string[], val: any) {
-  let obj = {};
+  const obj = {};
   if (keys.length !== 1) {
     const currentKey = keys.shift(); // let's take the head and start recursion
     if (currentKey) {

@@ -1,9 +1,9 @@
-import * as Radium from 'radium';
+import Radium from 'radium';
 import * as React from 'react';
 
 export interface PanelProps {
   error?: string;
-};
+}
 
 const Panel: React.StatelessComponent<PanelProps> = ({ error, children }) => (
   <div>

@@ -1,8 +1,8 @@
 import { Map } from 'immutable';
-import *  as Radium from 'radium';
+import Radium from 'radium';
 import * as React from 'react';
 import { updateMessages } from '../actions';
-import { StoredTranslation }from '../Connector';
+import { StoredTranslation } from '../Connector';
 import Translation from './Translation';
 import { EditorProps, EditorState, SortedKeys } from './types';
 

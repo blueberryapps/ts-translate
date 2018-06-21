@@ -1,14 +1,14 @@
-import * as Radium from 'radium';
+import Radium from 'radium';
 import * as React from 'react';
 
 export interface OpenerProps {
   open: () => void;
   opened: boolean;
   width: number;
-};
+}
 
 const Opener: React.StatelessComponent<OpenerProps> = ({ open, opened, width }) => (
-  <button onClick={open} style={[style, opened && { right: width }]}>
+  <button onClick={open} style={[style, opened && { right: width }] as any}>
     TS
   </button>
 );

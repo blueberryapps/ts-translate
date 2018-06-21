@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import { Dispatch } from 'redux';
+import { Action, Dispatch } from 'redux';
 import { fetchTranslations, updateMessages } from './actions';
 import apiCall, { apiUrlResolve } from './api';
 import { ApiConfig, Locale, Messages, TranslationResult } from './types';
@@ -17,13 +17,13 @@ export default class Connector {
   currentLocation: string;
   config: ApiConfig;
   api = apiCall;
-  dispatch: Dispatch<void>;
+  dispatch: Dispatch<Action>;
   translationStore: any;
   previousTranslationsSend: any;
   sendTimeout: any;
   locale: Locale;
 
-  constructor(config: ApiConfig, dispatch: Dispatch<void>, pathname?: string) {
+  constructor(config: ApiConfig, dispatch: Dispatch<Action>, pathname?: string) {
     this.currentLocation = pathname || '/';
     this.config = config;
     this.dispatch = dispatch;
