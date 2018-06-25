@@ -15,7 +15,7 @@ export const initialState: TranslatorOptions = {
  * @param  {Object} action      Flux action
  * @return {Object}             Updated app state
  */
-export function translationReducer(state: TranslatorOptions = initialState, action: TranslateAction) {
+export function translationReducer(state: TranslatorOptions = initialState, action: TranslateAction): TranslatorOptions {
   // Revive state if messages are not immutable Map
   if (!Map.isMap(state.messages)) {
     return { ...initialState, ...state, messages: fromJS(state.messages) };
@@ -23,7 +23,7 @@ export function translationReducer(state: TranslatorOptions = initialState, acti
 
   switch (action.type) {
 
-    case actions.TRANSLATE_CHANGE_LOCALE: return { ...state, locale: action.payload };
+    case actions.TRANSLATE_CHANGE_LOCALE: return { ...state, locale: action.payload } as TranslatorOptions;
 
     case actions.TRANSLATE_UPDATE_MESSAGES:
       return {
