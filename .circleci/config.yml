@@ -1,0 +1,49 @@
+version: 2
+
+references:
+  container-config: &container_config
+    docker:
+      - image: circleci/node:9
+jobs:
+  test:
+    <<: *container_config
+    steps:
+      - checkout
+      - run:
+          name: Install yarn
+          command: curl -o- -L https://yarnpkg.com/install.sh | bash
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Check linter and tests
+          command: |
+            yarn tslint
+            yarn test
+
+  deploy:
+    <<: *container_config
+    steps:
+      - checkout
+      - run:
+          name: Publish npm package
+          command: ./publish
+
+workflows:
+  version: 2
+  test-and-release:
+    jobs:
+      - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
