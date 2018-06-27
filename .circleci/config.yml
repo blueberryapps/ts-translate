@@ -31,6 +31,8 @@ jobs:
     <<: *container_config
     steps:
       - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Publish npm package
           command: ./publish
