@@ -105,7 +105,7 @@ export class Translator {
     const defaultFormat = this.__findTranslation(['formats'].concat(['date', 'default', 'format']));
     const format = (keywordFormat || customFormat || defaultFormat || defaultFormats.formats.date.default.format) as string;
 
-    return formatDate(givenDate, this.locale, format);
+    return formatDate(givenDate, this.__locale(), format);
   }
 
   formatNumber: FormatNumber = (givenNumber, options) => {
