@@ -35,7 +35,7 @@ export class Provider extends React.Component<ProviderProps, ProviderState> { //
     translator: () => {},
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       historyUnsubscribe: this.props.history ? this.props.history.listen(this.updateLocation) : undefined,
     });
@@ -47,7 +47,7 @@ export class Provider extends React.Component<ProviderProps, ProviderState> { //
     }
   }
 
-  componentWillUpdate(nextProps: ProviderProps) {
+  componentDidUpdate(nextProps: ProviderProps) {
     if (nextProps.pathname && this.connector && nextProps.pathname !== this.props.pathname) {
       this.connector.updateLocation(nextProps.pathname);
     }

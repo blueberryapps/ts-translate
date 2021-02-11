@@ -51,7 +51,7 @@ export function translate<P>(scope?: string | string[], overrides?: MsgOptions):
         translator: PropTypes.object,
       };
 
-      componentWillMount() {
+      componentDidMount() {
         const { store } = this.context;
         if (!store) {
           return;
