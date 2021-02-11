@@ -72,7 +72,7 @@ export class TranslationEditor extends React.PureComponent<TranslationEditorProp
     unsubscribeStore: () => {},
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { store, translator } = this.context;
 
     const historyUnsubscribe = this.props.history ? this.props.history.listen(this.updateState) : undefined;
