@@ -30,7 +30,7 @@
     "immutable": "^3.8.2",
     "isomorphic-fetch": "^2.2.1",
     "jest": "^23.1.0",
-    "moment": "^2.17.1",
+    "moment": "^2.29.4",
     "nock": "^9.3.3",
     "prop-types": "^15.6.1",
     "radium": "^0.24.0",
